@@ -14,13 +14,17 @@ class Table{
 
     public:
         // Constructor and destructor
-        Table(int size);
+        Table(unsigned int size);
         ~Table();
         // Getters
         Table* getFather();
         Table* getSon();
         unsigned int* getTokens(); 
         unsigned getIndexOfVoidSpace();
+        // Other methods goes here
+        void setInitialState();
+        void givesLight();
+        // I think these methods here can be written as auxiliary functions and not inner methods
 
 };
 
