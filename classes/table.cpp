@@ -1,12 +1,12 @@
 #include "table.h"
 
-Table::Table(unsigned int size){
+Table::Table(unsigned int size, unsigned int indexOfVoidSpace){
 
-    // Initializing the class.
+    // Initializing the class
     this->father = nullptr;
-    this->son = nullptr;
+    //this->son = nullptr;
     this->size = size;
-    this->indexOfVoidSpace = size / 2 + 1;
+    this->indexOfVoidSpace = indexOfVoidSpace;
     this->tokens = new unsigned int(size);
 
 }
