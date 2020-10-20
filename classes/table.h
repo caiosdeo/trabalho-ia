@@ -22,10 +22,11 @@ class Table{
         unsigned int* getTokens(); 
         unsigned getIndexOfVoidSpace();
         // Other methods goes here
+        void printTable();
         void setInitialState();
         void givesLight();
         // I think these methods here can be written as auxiliary functions and not inner methods
 
 };
 
-#endif //TABLE_H_INCLUDED
+#endif // TABLE_H_INCLUDED
