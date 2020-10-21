@@ -22,8 +22,11 @@ class Table{
         ~Table();
         // Getters
         Table* getFather();
+        // Setters
+        void setHashValue();
         // Other methods goes here
         void givesLight(Table* father, unsigned int rule);
+
 
 };
 
