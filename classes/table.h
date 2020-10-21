@@ -1,5 +1,6 @@
 #ifndef TABLE_H_INCLUDED
 #define TABLE_H_INCLUDED
+#include <queue>
 
 using namespace std;
 
@@ -8,30 +9,21 @@ class Table{
     private:
         unsigned int size;
         Table* father;
-        //Table* son; maybe sons will be better
+        Table* sons; 
         unsigned int* tokens;
         unsigned int indexOfVoidSpace;
-        //bool controlRoles[4];
-        //bool avaliableRoles;
-        //unsigned int cost;
-        //unsigned int hashValue;
+        queue<int> rules;
+        unsigned int cost; // ?TOTHINK: the cost is the number of tokens hopped plus one
+        unsigned int hashValue; //TODO: the hashValue is defined by a sum of the color value times its index
 
     public:
         // Constructor and destructor
-        Table(unsigned int size, unsigned int indexOfVoidSpace);
+        Table(unsigned int size);
         ~Table();
         // Getters
         Table* getFather();
-        Table* getSon();
-        unsigned int* getTokens(); 
-        //unsigned getIndexOfVoidSpace();
         // Other methods goes here
-        void setInitialState();
-        //bool checkAvaliableRoles();
-        //bool isAncestor();
-        //Table* givesLight();
-        //Table* givesLight(unsigned int controlRole);
-        // I think these methods here can be written as auxiliary functions and not inner methods
+        void givesLight(Table* father, unsigned int rule);
 
 };
 
