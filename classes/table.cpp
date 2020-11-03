@@ -4,9 +4,8 @@ Table::Table(unsigned int size){
 
     // Initializing the class
     this->father = nullptr;
-    this->sons = nullptr;
     this->size = size;
-    this->indexOfVoidSpace = indexOfVoidSpace;
+    this->indexOfVoidSpace = size / 2;
     this->tokens = new unsigned int(size);
     this->cost = 0;
 
