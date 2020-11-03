@@ -3,7 +3,7 @@
 
 using namespace std;
 
-void printTable(int* tokens, unsigned int size){
+void printTable(unsigned int* tokens, unsigned int size){
 
     cout << "Table:\n|";
     for( int i = 0; i < size; i++)
