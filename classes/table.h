@@ -1,5 +1,6 @@
 #ifndef TABLE_H_INCLUDED
 #define TABLE_H_INCLUDED
+#include <queue>
 
 using namespace std;
 
@@ -8,9 +9,12 @@ class Table{
     private:
         unsigned int size;
         Table* father;
-        Table* son;
+        Table* sons; 
         unsigned int* tokens;
         unsigned int indexOfVoidSpace;
+        queue<int> rules;
+        unsigned int cost; // ?TOTHINK: the cost is the number of tokens hopped plus one
+        unsigned int hashValue; //TODO: the hashValue is defined by a sum of the color value times its index
 
     public:
         // Constructor and destructor
@@ -18,9 +22,6 @@ class Table{
         ~Table();
         // Getters
         Table* getFather();
-        Table* getSon();
-        unsigned int* getTokens(); 
-        unsigned getIndexOfVoidSpace();
         // Other methods goes here
         void printTable();
         void setInitialState();
