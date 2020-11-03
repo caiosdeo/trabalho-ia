@@ -1,5 +1,6 @@
 #include <iostream>
 #include "classes/table.h"
+#include "auxiliar_functions/aux.h"
 
 using namespace std;
 
@@ -17,7 +18,7 @@ int main(int argc, char const *argv[]) {
     // Criando tabuleiro com o tamanho passado no argumento
     Table* tabuleiro = new Table(atoi(argv[1]));
 
-    tabuleiro->printTable();
+    printTable(tabuleiro->getTokens(), tabuleiro->getSize());
 
     return 0;
 }
