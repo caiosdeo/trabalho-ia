@@ -1,4 +1,7 @@
+#include <iostream>
 #include "table.h"
+
+using namespace std;
 
 Table::Table(unsigned int size){
 
@@ -17,7 +20,7 @@ Table::Table(unsigned int size){
     for (int i = 0; i < this->size / 2; i++){
 
         this->tokens[i] = 1;
-        this->tokens[size-1-i] = 2;
+        this->tokens[this->size-1-i] = 2;
 
     }
 
@@ -26,6 +29,7 @@ Table::Table(unsigned int size){
 
 }
 
+// Setters
 void Table::setHashValue(){
 
     unsigned int sum = 0;
@@ -34,5 +38,9 @@ void Table::setHashValue(){
         sum += this->tokens[i]*(i+1);
 
     this->hashValue = sum;
+}
 
+// Getters
+unsigned int* Table::getTokens(){
+    return this->tokens;
 }

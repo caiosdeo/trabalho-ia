@@ -12,7 +12,6 @@ class Table{
         Table* sons;  //TODO: remove sons attribute 
         unsigned int* tokens;
         unsigned int indexOfVoidSpace;
-        queue<int> rules; //TODO: remove rules attribute
         int rule; // Rule that generates the atual state
         unsigned int cost; // ?TOTHINK: the cost is the number of tokens hopped plus one
         unsigned int hashValue; //TODO: the hashValue is defined by a sum of the color value times its index
@@ -23,11 +22,16 @@ class Table{
         ~Table();
         // Getters
         Table* getFather();
+        unsigned int* getTokens();
+        unsigned int getSize();
         // Setters
         void setHashValue();
         // Other methods goes here
-        void givesLight(Table* father, unsigned int rule);
+        void printTable();
+        void setInitialState();
+        void givesLight();
+        // I think these methods here can be written as auxiliary functions and not inner methods
 
 };
 
-#endif //TABLE_H_INCLUDED
+#endif // TABLE_H_INCLUDED
