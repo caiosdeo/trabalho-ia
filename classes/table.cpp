@@ -40,7 +40,27 @@ void Table::setHashValue(){
     this->hashValue = sum;
 }
 
+void Table::setFather(Table* father){
+    this->father = father;
+}
+
+void Table::setTokens(unsigned int* tokens){
+    this->tokens = tokens;
+}
+
+void Table::setIndexOfVoidSpace(unsigned int indexOfVoidSpace){
+    this->indexOfVoidSpace = indexOfVoidSpace;
+}
+
 // Getters
 unsigned int* Table::getTokens(){
     return this->tokens;
+}
+
+unsigned int Table::getSize(){
+    return this->size;
+}
+
+unsigned int Table::getIndexOfVoidSpace(){
+    return this->indexOfVoidSpace;
 }
