@@ -12,7 +12,7 @@ class Table{
         unsigned int* tokens;
         unsigned int indexOfVoidSpace;
         int rule; // Rule that generates the atual state
-        unsigned int cost; // ?TOTHINK: the cost is the number of tokens hopped plus one
+        unsigned int cost; // ?TOTHINK: the cost is the number of tokens hopped plus one || the rule plus one
         unsigned int hashValue;
 
     public:
@@ -24,8 +24,9 @@ class Table{
         unsigned int* getTokens();
         unsigned int getSize();
         unsigned int getIndexOfVoidSpace();
+        unsigned int getHashValue();
         // Setters
-        void setHashValue();       
+        void setHashValue(unsigned int hashValue);       
         void setFather(Table* father);
         void setTokens(unsigned int* tokens);
         void setIndexOfVoidSpace(unsigned int indexOfVoidSpace);

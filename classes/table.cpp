@@ -1,5 +1,6 @@
 #include <iostream>
 #include "table.h"
+#include "../auxiliar_functions/aux.h"
 
 using namespace std;
 
@@ -26,19 +27,14 @@ Table::Table(unsigned int size){
     }
 
     // Setting the hashValue
-    this->setHashValue();
+    unsigned int hash = hashValue(this->tokens, this->size);
+    this->setHashValue(hash);
 
 }
 
 // Setters
-void Table::setHashValue(){
-
-    unsigned int sum = 0;
-
-    for(int i = 0; i < this->size; i++)
-        sum += this->tokens[i]*(i+1);
-
-    this->hashValue = sum;
+void Table::setHashValue(unsigned int hashValue){
+    this->hashValue = hashValue;
 }
 
 void Table::setFather(Table* father){
@@ -64,4 +60,8 @@ unsigned int Table::getSize(){
 
 unsigned int Table::getIndexOfVoidSpace(){
     return this->indexOfVoidSpace;
+}
+
+unsigned int Table::getHashValue(){
+    return this->hashValue;
 }

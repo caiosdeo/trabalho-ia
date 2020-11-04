@@ -1,13 +1,28 @@
 #include <iostream>
+#include <list>
 #include "aux.h"
 
 using namespace std;
+
+char tokenChar(unsigned int token){
+    
+    switch(token){
+        case 0:
+            return '-';
+        case 1:
+            return 'W';
+        case 2:
+            return 'B';
+        default:
+            break;
+    }
+}
 
 void printTable(unsigned int* tokens, unsigned int size){
 
     cout << "Table:\n|";
     for( int i = 0; i < size; i++)
-        cout << i << ": " << tokens[i] << "|";
+        cout << i << ": " << tokenChar(tokens[i]) << "|";
     cout << endl; 
 
 }
@@ -21,14 +36,80 @@ void swap(unsigned int* tokens, int i, int j){
 
 Table* givesLight(Table* father, int rule){
 
+    // Aux variables
     unsigned int fathersVoidSpace = father->getIndexOfVoidSpace();
     unsigned int* fathersTokens = father->getTokens();
+    // New Table
     Table* t = new Table(father->getSize());
+    // Setting attributes
     t->setFather(father);
+    // This is to apply the rule to its tokens array
     swap(fathersTokens,fathersVoidSpace,fathersVoidSpace-rule);
     t->setTokens(fathersTokens);
-    t->setHashValue();
+    t->setHashValue(hashValue(t->getTokens(),t->getSize()));
     t->setIndexOfVoidSpace(fathersVoidSpace-rule);
+    
     return t;
+
+}
+// TODO: rethink all of this mess
+// list<int> findApplicableRules(Table* n){
+
+//     list<int> rules;
+//     unsigned int number_of_jumps = (n->getSize() / 2) - 1;
+//     // ?TOTHINK: using the x-axis as a guider to the order of the rules
+//     // This loop searches the rules by the left
+//     for(int counter = 0, i = n->getIndexOfVoidSpace(); counter < number_of_jumps && i >= 0; i--, counter--){
+
+//         if(isAncestor(n))
+//             rules.push_front(counter)
+
+//     }
+//     // This loop searches the rules by the right
+//     for(int counter = 0, i = n->getIndexOfVoidSpace(); counter < number_of_jumps && i < n->getSize(); i++, counter++){
+
+        
+
+//     }
+
+// }
+
+bool isAncestor(Table* n, unsigned int hashValue){
+
+    Table* aux = n;
+
+    while(n != nullptr){
+        
+        if(n->getHashValue() == hashValue)
+            return true;
+
+        n = n->getFather();
+
+    }
+
+    return false;
+
+}
+
+unsigned int hashValue(unsigned int* tokens, unsigned int size){
+
+    unsigned int sum = 0;
+
+    for(int i = 0; i < size; i++)
+        sum += tokens[i]*(i+1);
+
+    return sum;
+}
+
+unsigned int likelyHashValue(unsigned int* tokens, unsigned int size, int voidSpace, int rule){
+
+    unsigned int* auxTokens;
+
+    for(int i = 0; i < size; i++)
+        auxTokens[i] = tokens[i];
+
+    swap(auxTokens, voidSpace, voidSpace-rule);
+
+    return hashValue(auxTokens, size);
 
 }
