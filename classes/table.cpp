@@ -9,6 +9,7 @@ Table::Table(unsigned int size){
     this->father = nullptr;
     this->size = size;
     this->indexOfVoidSpace = size / 2;
+    this->rule = 0;
     this->tokens = new unsigned int(size);
     this->cost = 0;
 
