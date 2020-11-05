@@ -6,19 +6,15 @@ using namespace std;
 
 char tokenChar(unsigned int token){
     
-    switch(token){
-        case 0:
-            return '#';
-        case 1:
-            return 'W';
-        case 2:
-            return 'B';
-        default:
-            return NULL;
-            break;
-    }
+    if(token == 0)
+        return '#';
+    else if(token == 1)
+        return 'W';
+    else if(token == 2)
+        return 'B';
 
-    return NULL;
+    return '#';
+
 }
 
 void printTable(unsigned int* tokens, unsigned int size){
