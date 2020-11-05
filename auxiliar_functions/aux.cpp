@@ -8,14 +8,17 @@ char tokenChar(unsigned int token){
     
     switch(token){
         case 0:
-            return '-';
+            return '#';
         case 1:
             return 'W';
         case 2:
             return 'B';
         default:
+            return NULL;
             break;
     }
+
+    return NULL;
 }
 
 void printTable(unsigned int* tokens, unsigned int size){
