@@ -1,4 +1,5 @@
 #include "../classes/table.h"
+#include <list> // ?TOASK: why this include must be here?
 
 /**
  * Dictionary to get a matching char for a token's value
@@ -31,12 +32,54 @@ void swap(unsigned int* tokens, int i, int j);
  */
 Table* givesLight(Table* father, int rule);
 
+/**
+ * Function to generate a list with all apllicable operators
+ *
+ * @author eliascassis
+ * @param n father pointer of father's Table
+ * @return list<int> the list of all appicable rules
+ */
 list<int> findApplicableRules(Table* n);
 
+/**
+ * Function to verifies if a node n has an ancestor
+ *
+ * @author eliascassis
+ * @param n father pointer of father's Table
+ * @param hashValue table's hash value
+ * @return bool if the node n has an ancestor or not
+ */
 bool isAncestor(Table* n, unsigned int hashValue);
 
+/**
+ * Function that calculates a hash value to the table
+ *
+ * @author eliascassis
+ * @param tokens pointer to the tokens of the table class
+ * @param size size of the table
+ * @return int the calculated hash
+ */
 unsigned int hashValue(unsigned int* tokens, unsigned int size);
 
+/**
+ * Function that search applicable rules by the left
+ *
+ * @author eliascassis
+ * @param rules list that will be filled
+ * @param n father pointer of father's Table
+ */
+void searchByTheLeft(list<int> rules, Table* n);
+
+/**
+ * Function that search applicable rules by the right
+ *
+ * @author eliascassis
+ * @param rules list that will be filled
+ * @param n father pointer of father's Table
+ */
+void searchByTheRight(list<int> rules, Table* n);
+
+// TODO: verifies this documentation here
 /**
  * Print the Table's tokens
  *

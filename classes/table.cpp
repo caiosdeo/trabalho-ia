@@ -27,14 +27,19 @@ Table::Table(unsigned int size){
     }
 
     // Setting the hashValue
-    unsigned int hash = hashValue(this->tokens, this->size);
-    this->setHashValue(hash);
+    this->setHashValue();
 
 }
 
 // Setters
-void Table::setHashValue(unsigned int hashValue){
-    this->hashValue = hashValue;
+void Table::setHashValue(){
+    
+    unsigned int sum = 0;
+
+    for(int i = 0; i < size; i++)
+        sum += tokens[i]*(i+1);
+
+    this->hashValue = sum;
 }
 
 void Table::setFather(Table* father){

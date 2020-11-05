@@ -46,33 +46,56 @@ Table* givesLight(Table* father, int rule){
     // This is to apply the rule to its tokens array
     swap(fathersTokens,fathersVoidSpace,fathersVoidSpace-rule);
     t->setTokens(fathersTokens);
-    t->setHashValue(hashValue(t->getTokens(),t->getSize()));
+    t->setHashValue();
     t->setIndexOfVoidSpace(fathersVoidSpace-rule);
     
     return t;
 
 }
-// TODO: rethink all of this mess
-// list<int> findApplicableRules(Table* n){
 
-//     list<int> rules;
-//     unsigned int number_of_jumps = (n->getSize() / 2) - 1;
-//     // ?TOTHINK: using the x-axis as a guider to the order of the rules
-//     // This loop searches the rules by the left
-//     for(int counter = 0, i = n->getIndexOfVoidSpace(); counter < number_of_jumps && i >= 0; i--, counter--){
+list<int> findApplicableRules(Table* n){
 
-//         if(isAncestor(n))
-//             rules.push_front(counter)
+    list<int> rules;
+    unsigned int numberOfJumps = (n->getSize() / 2) - 1;
+    unsigned int voidSpaceIndex = n->getIndexOfVoidSpace();
+    // ?TOTHINK: using the x-axis as a guider to the order of the rules
+    // Verifying if are space to search by the left
+    if(voidSpaceIndex == 0)
+        // By the right
+        searchByTheRight(rules,n,numberOfJumps);
+    else if(voidSpaceIndex == n->getSize()-1)
+        // By the left
+        searchByTheLeft(rules,n,numberOfJumps);
+    else{
+        searchByTheRight(rules,n,numberOfJumps);
+        searchByTheLeft(rules,n,numberOfJumps);
+    }
 
-//     }
-//     // This loop searches the rules by the right
-//     for(int counter = 0, i = n->getIndexOfVoidSpace(); counter < number_of_jumps && i < n->getSize(); i++, counter++){
+}
 
-        
+void searchByTheLeft(list<int> rules, Table* n, unsigned int numberOfJumps){
 
-//     }
+    // This loop searches the rules by the left
+    for(int counter = 0, i = n->getIndexOfVoidSpace(); counter < numberOfJumps && i > 0; i--, counter++){
 
-// }
+        if(!isAncestor(n,hashValue(n->getTokens(),n->getSize())))
+            rules.push_front(counter);
+
+    }
+
+}
+
+void searchByTheRight(list<int> rules, Table* n, unsigned int numberOfJumps){
+
+    // This loop searches the rules by the right
+    for(int counter = 0, i = n->getIndexOfVoidSpace(); counter < numberOfJumps && i < n->getSize(); i++, counter--){
+
+        if(!isAncestor(n,hashValue(n->getTokens(),n->getSize())))
+            rules.push_front(counter);
+
+    }
+
+}
 
 bool isAncestor(Table* n, unsigned int hashValue){
 

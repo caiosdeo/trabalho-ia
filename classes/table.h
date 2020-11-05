@@ -26,7 +26,7 @@ class Table{
         unsigned int getIndexOfVoidSpace();
         unsigned int getHashValue();
         // Setters
-        void setHashValue(unsigned int hashValue);       
+        void setHashValue();       
         void setFather(Table* father);
         void setTokens(unsigned int* tokens);
         void setIndexOfVoidSpace(unsigned int indexOfVoidSpace);
