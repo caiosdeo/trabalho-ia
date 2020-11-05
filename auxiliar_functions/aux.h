@@ -67,8 +67,9 @@ unsigned int hashValue(unsigned int* tokens, unsigned int size);
  * @author eliascassis
  * @param rules list that will be filled
  * @param n father pointer of father's Table
+ * @param numberOfJumps the maximum size of search
  */
-void searchByTheLeft(list<int> rules, Table* n);
+void searchByTheLeft(list<int> rules, Table* n, unsigned int numberOfJumps);
 
 /**
  * Function that search applicable rules by the right
@@ -76,8 +77,9 @@ void searchByTheLeft(list<int> rules, Table* n);
  * @author eliascassis
  * @param rules list that will be filled
  * @param n father pointer of father's Table
+ * @param numberOfJumps the maximum size of search
  */
-void searchByTheRight(list<int> rules, Table* n);
+void searchByTheRight(list<int> rules, Table* n, unsigned int numberOfJumps);
 
 // TODO: verifies this documentation here
 /**

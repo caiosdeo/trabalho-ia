@@ -71,6 +71,8 @@ list<int> findApplicableRules(Table* n){
         searchByTheLeft(rules,n,numberOfJumps);
     }
 
+    return rules;
+
 }
 
 void searchByTheLeft(list<int> rules, Table* n, unsigned int numberOfJumps){
@@ -98,8 +100,6 @@ void searchByTheRight(list<int> rules, Table* n, unsigned int numberOfJumps){
 }
 
 bool isAncestor(Table* n, unsigned int hashValue){
-
-    Table* aux = n;
 
     while(n != nullptr){
         

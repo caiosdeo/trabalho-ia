@@ -70,3 +70,7 @@ unsigned int Table::getIndexOfVoidSpace(){
 unsigned int Table::getHashValue(){
     return this->hashValue;
 }
+
+Table* Table::getFather(){
+    return this->father;
+}
