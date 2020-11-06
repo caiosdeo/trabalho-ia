@@ -16,7 +16,7 @@ Table::Table(unsigned int size){
 
     // Initializing the table
     // *NOTE: this implementation uses 0 to void spaces, 1 to white tokens and 2 to black tokens
-    this->tokens[this->indexOfVoidSpace] = 0;
+    this->tokens[this->indexOfVoidSpace] = 3;
 
     // Inserting the tokens in the list
     for (int i = 0; i < this->size / 2; i++){
@@ -32,6 +32,7 @@ Table::Table(unsigned int size){
 }
 
 // Setters
+// TODO: rethink hash value
 void Table::setHashValue(){
     
     unsigned int sum = 0;
@@ -73,4 +74,18 @@ unsigned int Table::getHashValue(){
 
 Table* Table::getFather(){
     return this->father;
+}
+
+// Other methods
+char Table::tokenChar(unsigned int token){
+
+    if(token == 0)
+        return '#';
+    else if(token == 1)
+        return 'W';
+    else if(token == 2)
+        return 'B';
+
+    return '#';
+
 }

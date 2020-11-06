@@ -6,7 +6,7 @@ using namespace std;
 
 char tokenChar(unsigned int token){
     
-    if(token == 0)
+    if(token == 3)
         return '#';
     else if(token == 1)
         return 'W';
@@ -19,7 +19,7 @@ char tokenChar(unsigned int token){
 
 void printTable(unsigned int* tokens, unsigned int size){
 
-    cout << "Table:\n|";
+    cout << "Table: |";
     for( int i = 0; i < size; i++)
         cout << i << ": " << tokenChar(tokens[i]) << "|";
     cout << endl; 
@@ -29,7 +29,7 @@ void printTable(unsigned int* tokens, unsigned int size){
 void swap(unsigned int* tokens, int i, int j){
 
     tokens[i] = tokens[j]; // Inserts the token calculated by the rule in the void space
-    tokens[j] = 0; // The void space is now the space where the token was located
+    tokens[j] = 3; // The void space is now the space where the token was located
 
 }
 
@@ -37,7 +37,7 @@ Table* givesLight(Table* father, int rule){
 
     // Aux variables
     unsigned int fathersVoidSpace = father->getIndexOfVoidSpace();
-    unsigned int* fathersTokens = father->getTokens();
+    unsigned int* fathersTokens = copyTokens(father->getTokens(), father->getSize());
     // New Table
     Table* t = new Table(father->getSize());
     // Setting attributes
@@ -52,11 +52,13 @@ Table* givesLight(Table* father, int rule){
 
 }
 
-list<int> findApplicableRules(Table* n){
+list<int>* findApplicableRules(Table* n){
 
-    list<int> rules;
+
+    list<int>* rules = new list<int>;
     unsigned int numberOfJumps = (n->getSize() / 2) - 1;
     unsigned int voidSpaceIndex = n->getIndexOfVoidSpace();
+
     // ?TOTHINK: using the x-axis as a guider to the order of the rules
     // Verifying if are space to search by the left
     if(voidSpaceIndex == 0)
@@ -74,26 +76,27 @@ list<int> findApplicableRules(Table* n){
 
 }
 
-void searchByTheLeft(list<int> rules, Table* n, unsigned int numberOfJumps){
+void searchByTheLeft(list<int>* rules, Table* n, unsigned int numberOfJumps){
 
     // This loop searches the rules by the left
-    for(int counter = 0, i = n->getIndexOfVoidSpace(); counter < numberOfJumps && i > 0; i--, counter++){
-
-        if(!isAncestor(n,hashValue(n->getTokens(),n->getSize())))
-            rules.push_front(counter);
-
+    for(int counter = 0, i = n->getIndexOfVoidSpace()-1; counter <= numberOfJumps && i >= 0; i--, counter++){
+        
+        if(!isAncestor(n,likelyHashValue(n->getTokens(),n->getSize(),n->getIndexOfVoidSpace(),counter+1)))
+            rules->push_back(counter+1);
+        
     }
 
 }
 
-void searchByTheRight(list<int> rules, Table* n, unsigned int numberOfJumps){
+void searchByTheRight(list<int>* rules, Table* n, unsigned int numberOfJumps){
+
 
     // This loop searches the rules by the right
-    for(int counter = 0, i = n->getIndexOfVoidSpace(); counter < numberOfJumps && i < n->getSize(); i++, counter--){
+    for(int counter = 0, i = n->getIndexOfVoidSpace()+1; counter <= numberOfJumps && i < n->getSize(); i++, counter++){
 
-        if(!isAncestor(n,hashValue(n->getTokens(),n->getSize())))
-            rules.push_front(counter);
-
+        if(!isAncestor(n,likelyHashValue(n->getTokens(),n->getSize(),n->getIndexOfVoidSpace(),-(counter+1))))
+            rules->push_back(-(counter+1));
+        
     }
 
 }
@@ -127,11 +130,22 @@ unsigned int likelyHashValue(unsigned int* tokens, unsigned int size, int voidSp
 
     unsigned int* auxTokens;
 
+    auxTokens = copyTokens(tokens, size);
+
+
+    swap(auxTokens, voidSpace, voidSpace - rule);
+
+    return hashValue(auxTokens, size);
+
+}
+
+unsigned int* copyTokens(unsigned int* tokens, unsigned int size){
+
+    unsigned int* auxTokens = new unsigned int(size);
+
     for(int i = 0; i < size; i++)
         auxTokens[i] = tokens[i];
 
-    swap(auxTokens, voidSpace, voidSpace-rule);
-
-    return hashValue(auxTokens, size);
+    return auxTokens;
 
 }

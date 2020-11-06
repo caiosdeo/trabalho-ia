@@ -39,7 +39,7 @@ Table* givesLight(Table* father, int rule);
  * @param n father pointer of father's Table
  * @return list<int> the list of all appicable rules
  */
-list<int> findApplicableRules(Table* n);
+list<int>* findApplicableRules(Table* n);
 
 /**
  * Function to verifies if a node n has an ancestor
@@ -69,7 +69,7 @@ unsigned int hashValue(unsigned int* tokens, unsigned int size);
  * @param n father pointer of father's Table
  * @param numberOfJumps the maximum size of search
  */
-void searchByTheLeft(list<int> rules, Table* n, unsigned int numberOfJumps);
+void searchByTheLeft(list<int>* rules, Table* n, unsigned int numberOfJumps);
 
 /**
  * Function that search applicable rules by the right
@@ -79,11 +79,11 @@ void searchByTheLeft(list<int> rules, Table* n, unsigned int numberOfJumps);
  * @param n father pointer of father's Table
  * @param numberOfJumps the maximum size of search
  */
-void searchByTheRight(list<int> rules, Table* n, unsigned int numberOfJumps);
+void searchByTheRight(list<int>* rules, Table* n, unsigned int numberOfJumps);
 
 // TODO: verifies this documentation here
 /**
- * Print the Table's tokens
+ * Generates the hash value to compares to ancestors
  *
  * @author caiosdeo
  * @param unsigned int* tokens array
@@ -95,3 +95,12 @@ void searchByTheRight(list<int> rules, Table* n, unsigned int numberOfJumps);
 unsigned int likelyHashValue(unsigned int* tokens, unsigned int size, int voidSpace, int rule);
 
 // TODO: create a copyTokens method to allow every table to have its own tokens' array
+/**
+ * Copy an tokens' array
+ *
+ * @author caiosdeo
+ * @param unsigned int* tokens array
+ * @param unsigned int size of tokens' array
+ * @return unsigned int* copied array
+ */
+unsigned int* copyTokens(unsigned int* tokens, unsigned int size);

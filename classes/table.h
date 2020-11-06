@@ -1,6 +1,5 @@
 #ifndef TABLE_H_INCLUDED
 #define TABLE_H_INCLUDED
-#include <queue>
 
 using namespace std;
 
@@ -30,6 +29,8 @@ class Table{
         void setFather(Table* father);
         void setTokens(unsigned int* tokens);
         void setIndexOfVoidSpace(unsigned int indexOfVoidSpace);
+        // Other methods
+        char tokenChar(unsigned int token);
 
 };
 
