@@ -17,6 +17,8 @@ int main(int argc, char const *argv[]) {
 
     }
 
+    /*
+
     // Criando tabuleiro com o tamanho passado no argumento
     Table* tabuleiro = new Table(atoi(argv[1]));
     cout << "PAI: " << tabuleiro->getHashValue() << endl;
@@ -61,6 +63,23 @@ int main(int argc, char const *argv[]) {
     }
     cout << endl;
 
+    */
+
+    unsigned int tokens[5][5] = {
+        {1,2,2,1,0},
+        {1,2,2,0,1},
+        {1,2,0,2,1},
+        {1,0,2,1,2},
+        {0,2,1,1,2}
+    };
+
+    for (int i = 0; i < 5; i++){
+
+        for(int j = 0; j < 5; j++)
+            cout << tokens[i][j];
+
+        cout << " solução " << " " << checkSolution(tokens[i], 5) << endl;
+    }
     return 0;
     
 }

@@ -149,3 +149,29 @@ unsigned int* copyTokens(unsigned int* tokens, unsigned int size){
     return auxTokens;
 
 }
+
+bool checkSolution(unsigned int* tokens, unsigned int n){
+
+    int token = tokens[0];
+
+    if(token == 2 || tokens[n-1] == 2)
+        return false; 
+
+    for(int i = 1, flag = 0; i < n; i++){
+
+        if(tokens[i] == 0)
+            continue;
+
+        if(tokens[i] != token && token != 0)
+            flag++;
+
+        token = tokens[i];
+
+        if(flag > 2)
+            return false;
+
+    }
+
+    return true;
+
+}

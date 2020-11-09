@@ -104,3 +104,5 @@ unsigned int likelyHashValue(unsigned int* tokens, unsigned int size, int voidSp
  * @return unsigned int* copied array
  */
 unsigned int* copyTokens(unsigned int* tokens, unsigned int size);
+
+bool checkSolution(unsigned int* tokens, unsigned int n);
