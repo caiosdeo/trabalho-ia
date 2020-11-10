@@ -1,5 +1,4 @@
 #include <iostream>
-#include <list>
 #include "aux.h"
 
 using namespace std;
@@ -47,6 +46,7 @@ Table* givesLight(Table* father, int rule){
     t->setTokens(fathersTokens);
     t->setHashValue();
     t->setIndexOfVoidSpace(fathersVoidSpace-rule);
+    t->setRule(rule);
     
     return t;
 
@@ -152,26 +152,78 @@ unsigned int* copyTokens(unsigned int* tokens, unsigned int size){
 
 bool checkSolution(unsigned int* tokens, unsigned int n){
 
+    // aux token for comparison
     int token = tokens[0];
 
+    // if start or end of tokens is black
+    // it cant be a solution
     if(token == 2 || tokens[n-1] == 2)
         return false; 
 
-    for(int i = 1, flag = 0; i < n; i++){
+    int flag = 0;
 
+    // searching on the array
+    for(int i = 1; i < n; i++){
+
+        // if token equals to 0 we skip one iteraction
         if(tokens[i] == 0)
             continue;
 
+        // if the color changes we count it
         if(tokens[i] != token && token != 0)
             flag++;
 
         token = tokens[i];
 
+        // the solution can only changes color
+        // on the array twice
         if(flag > 2)
             return false;
 
     }
+    
+    // if it changed color once it means that its not a solution
+    if(flag = 1)
+        return false;
 
     return true;
+
+}
+
+stack<int>* getSolution(Table* n){
+
+    stack<int>* s = new stack<int>;
+
+    while(n != nullptr){
+
+        s->push(n->getRule());
+        n = n->getFather();
+
+    }
+
+    return s;
+
+}
+
+void printStack(stack<int>* s){
+
+    while(!s->empty()){
+
+        int n = s->top();
+        cout << ruleChar(n) << " ";
+        s->pop();
+        
+    }
+
+    cout << endl;
+
+}
+
+string ruleChar(int rule){
+
+    if(rule > 0)
+        return 'E' + to_string((rule - 1));
+    else 
+        return 'D' + to_string(-rule - 1);
 
 }

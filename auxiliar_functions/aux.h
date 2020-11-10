@@ -1,5 +1,7 @@
 #include "../classes/table.h"
-#include <list> // ?TOASK: why this include must be here?
+#include <list> 
+#include <stack>
+#include <string>
 
 /**
  * Dictionary to get a matching char for a token's value
@@ -20,6 +22,14 @@ char tokenChar(unsigned int token);
  */
 void printTable(unsigned int* tokens, unsigned int size);
 
+/**
+ * Function that swaps applicable rules by the right
+ *
+ * @author eliascassis
+ * @param rules list that will be filled
+ * @param n father pointer of father's Table
+ * @param numberOfJumps the maximum size of search
+ */
 void swap(unsigned int* tokens, int i, int j);
 
 /**
@@ -81,7 +91,6 @@ void searchByTheLeft(list<int>* rules, Table* n, unsigned int numberOfJumps);
  */
 void searchByTheRight(list<int>* rules, Table* n, unsigned int numberOfJumps);
 
-// TODO: verifies this documentation here
 /**
  * Generates the hash value to compares to ancestors
  *
@@ -94,7 +103,6 @@ void searchByTheRight(list<int>* rules, Table* n, unsigned int numberOfJumps);
  */
 unsigned int likelyHashValue(unsigned int* tokens, unsigned int size, int voidSpace, int rule);
 
-// TODO: create a copyTokens method to allow every table to have its own tokens' array
 /**
  * Copy an tokens' array
  *
@@ -105,4 +113,35 @@ unsigned int likelyHashValue(unsigned int* tokens, unsigned int size, int voidSp
  */
 unsigned int* copyTokens(unsigned int* tokens, unsigned int size);
 
+/**
+ * Function that checks if the tokens represent a solution
+ *
+ * @author eliascassis
+ * @param tokens Table's tokens
+ * @param n Table's size
+ */
 bool checkSolution(unsigned int* tokens, unsigned int n);
+/**
+ * Function that finds the solution
+ *
+ * @author eliascassis
+ * @param n the Table
+ */
+stack<int>* getSolution(Table* n);
+
+/**
+ * Print the stack
+ *
+ * @author caiosdeo
+ * @param unsigned stack<int>* stack with int
+ */
+void printStack(stack<int>* s);
+
+/**
+ * Dictionary to get a matching char for a rule's value
+ *
+ * @author caiosdeo
+ * @param unsigned token 
+ * @return char that corresponds to its int
+ */
+string ruleChar(int rule);

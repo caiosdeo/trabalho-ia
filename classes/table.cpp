@@ -55,6 +55,10 @@ void Table::setIndexOfVoidSpace(unsigned int indexOfVoidSpace){
     this->indexOfVoidSpace = indexOfVoidSpace;
 }
 
+void Table::setRule(int rule){
+    this->rule = rule;
+}
+
 // Getters
 unsigned int* Table::getTokens(){
     return this->tokens;
@@ -74,6 +78,10 @@ unsigned int Table::getHashValue(){
 
 Table* Table::getFather(){
     return this->father;
+}
+
+int Table::getRule(){
+    return this->rule;
 }
 
 // Other methods

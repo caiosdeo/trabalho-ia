@@ -24,11 +24,13 @@ class Table{
         unsigned int getSize();
         unsigned int getIndexOfVoidSpace();
         unsigned int getHashValue();
+        int getRule();
         // Setters
         void setHashValue();       
         void setFather(Table* father);
         void setTokens(unsigned int* tokens);
         void setIndexOfVoidSpace(unsigned int indexOfVoidSpace);
+        void setRule(int rule);
         // Other methods
         char tokenChar(unsigned int token);
 
