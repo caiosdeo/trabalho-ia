@@ -47,6 +47,7 @@ Table* givesLight(Table* father, int rule){
     t->setHashValue();
     t->setIndexOfVoidSpace(fathersVoidSpace-rule);
     t->setRule(rule);
+    t->setApplicableRules();
     
     return t;
 

@@ -29,6 +29,9 @@ Table::Table(unsigned int size){
     // Setting the hashValue
     this->setHashValue();
 
+    // Setting applicable rules
+    this->setApplicableRules();
+
 }
 
 // Setters
@@ -59,6 +62,10 @@ void Table::setRule(int rule){
     this->rule = rule;
 }
 
+void Table::setApplicableRules(){
+    this->applicableRules = findApplicableRules(this);
+}
+
 // Getters
 unsigned int* Table::getTokens(){
     return this->tokens;
@@ -82,6 +89,10 @@ Table* Table::getFather(){
 
 int Table::getRule(){
     return this->rule;
+}
+
+list<int>* Table::getApplicableRules(){
+    return this->applicableRules;
 }
 
 // Other methods

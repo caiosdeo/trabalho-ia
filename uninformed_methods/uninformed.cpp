@@ -1,5 +1,7 @@
 #include "uninformed.h"
 #include "../auxiliar_functions/aux.h"
+#include <iostream>
+#include <iterator>
 
 using namespace std;
 
@@ -13,8 +15,8 @@ Table* backtracking(Table* root){
     while(!(sucess || failure)){
 
         // List of possibles operators to N
-        list<int>* rules = findApplicableRules(N);
-        
+        list<int>* rules = N->getApplicableRules();
+
         if(!rules->empty()) {
 
             // Picking first operator
