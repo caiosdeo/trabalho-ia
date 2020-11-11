@@ -27,6 +27,7 @@ class Table{
         unsigned int getIndexOfVoidSpace();
         unsigned int getHashValue();
         int getRule();
+        int getCost();
         list<int>* getApplicableRules();
         // Setters
         void setHashValue();       
@@ -35,6 +36,7 @@ class Table{
         void setIndexOfVoidSpace(unsigned int indexOfVoidSpace);
         void setRule(int rule);
         void setApplicableRules(); //? Can generate errors
+        void setCost(int rule);
         // Other methods
         char tokenChar(unsigned int token);
 

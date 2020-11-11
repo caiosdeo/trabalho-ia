@@ -2,6 +2,7 @@
 #include <list> 
 #include <stack>
 #include <string>
+#include <tuple>
 
 /**
  * Dictionary to get a matching char for a token's value
@@ -57,9 +58,11 @@ list<int>* findApplicableRules(Table* n);
  * @author eliascassis
  * @param n father pointer of father's Table
  * @param hashValue table's hash value
+ * @param tokens Table's tokens 
+ * @param newIndexOfVoidSpace new index calculated for the potential Table
  * @return bool if the node n has an ancestor or not
  */
-bool isAncestor(Table* n, unsigned int hashValue);
+bool isAncestor(Table* n, unsigned int hashValue, unsigned int* tokens, unsigned int newIndexOfVoidSpace);
 
 /**
  * Function that calculates a hash value to the table
@@ -99,9 +102,9 @@ void searchByTheRight(list<int>* rules, Table* n, unsigned int numberOfJumps);
  * @param unsigned int size of tokens' array
  * @param int voidSpace index of void space
  * @param int rule 
- * @return unsigned int likely hash value
+ * @return tuple<unsigned, unsigned*, unsigned> 0 - likely hash value; 1 - likely tokens; 2 - likely voidspace
  */
-unsigned int likelyHashValue(unsigned int* tokens, unsigned int size, int voidSpace, int rule);
+tuple<unsigned, unsigned*, unsigned> likelyHashValue(unsigned int* tokens, unsigned int size, int voidSpace, int rule);
 
 /**
  * Copy an tokens' array
@@ -145,3 +148,14 @@ void printStack(stack<int>* s);
  * @return char that corresponds to its int
  */
 string ruleChar(int rule);
+
+/**
+ * Function to verifies if a node n has an ancestor
+ *
+ * @author eliascassis
+ * @param tokens Table's tokens 
+ * @param auxTokens Auxiliar Table's tokens
+ * @param n size of the Tables
+ * @return bool if the tables are equal or not
+ */
+bool tokensEquality(unsigned int* tokens, unsigned int* auxTokens, unsigned int n);

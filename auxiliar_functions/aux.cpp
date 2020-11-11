@@ -20,7 +20,7 @@ void printTable(unsigned int* tokens, unsigned int size){
 
     cout << "Table: |";
     for( int i = 0; i < size; i++)
-        cout << i << ": " << tokenChar(tokens[i]) << "|";
+        cout << tokenChar(tokens[i]) << "|";
     cout << endl; 
 
 }
@@ -55,7 +55,6 @@ Table* givesLight(Table* father, int rule){
 
 list<int>* findApplicableRules(Table* n){
 
-
     list<int>* rules = new list<int>;
     unsigned int numberOfJumps = (n->getSize() / 2) - 1;
     unsigned int voidSpaceIndex = n->getIndexOfVoidSpace();
@@ -64,13 +63,13 @@ list<int>* findApplicableRules(Table* n){
     // Verifying if are space to search by the left
     if(voidSpaceIndex == 0)
         // By the right
-        searchByTheRight(rules,n,numberOfJumps);
+        searchByTheRight(rules, n, numberOfJumps);
     else if(voidSpaceIndex == n->getSize()-1)
         // By the left
-        searchByTheLeft(rules,n,numberOfJumps);
+        searchByTheLeft(rules, n, numberOfJumps);
     else{
-        searchByTheRight(rules,n,numberOfJumps);
-        searchByTheLeft(rules,n,numberOfJumps);
+        searchByTheRight(rules, n, numberOfJumps);
+        searchByTheLeft(rules, n, numberOfJumps);
     }
 
     return rules;
@@ -82,7 +81,13 @@ void searchByTheLeft(list<int>* rules, Table* n, unsigned int numberOfJumps){
     // This loop searches the rules by the left
     for(int counter = 0, i = n->getIndexOfVoidSpace()-1; counter <= numberOfJumps && i >= 0; i--, counter++){
         
-        if(!isAncestor(n,likelyHashValue(n->getTokens(),n->getSize(),n->getIndexOfVoidSpace(),counter+1)))
+
+        // 0 - likelyHashValue
+        // 1 - likelyTokens
+        // 2 - likelyVoidSpace
+        tuple<unsigned, unsigned*, unsigned> likely = likelyHashValue(n->getTokens(), n->getSize(), n->getIndexOfVoidSpace(), counter+1);
+
+        if(!isAncestor(n, get<0>(likely), get<1>(likely), get<2>(likely)))
             rules->push_back(counter+1);
         
     }
@@ -95,20 +100,33 @@ void searchByTheRight(list<int>* rules, Table* n, unsigned int numberOfJumps){
     // This loop searches the rules by the right
     for(int counter = 0, i = n->getIndexOfVoidSpace()+1; counter <= numberOfJumps && i < n->getSize(); i++, counter++){
 
-        if(!isAncestor(n,likelyHashValue(n->getTokens(),n->getSize(),n->getIndexOfVoidSpace(),-(counter+1))))
+        tuple<unsigned, unsigned*, unsigned> likely = likelyHashValue(n->getTokens(),n->getSize(),n->getIndexOfVoidSpace(),-(counter+1));
+
+        if(!isAncestor(n, get<0>(likely), get<1>(likely), get<2>(likely)))
             rules->push_back(-(counter+1));
         
     }
 
 }
 
-bool isAncestor(Table* n, unsigned int hashValue){
+bool isAncestor(Table* n, unsigned int hashValue, unsigned int* tokens, unsigned int newIndexOfVoidSpace){
 
     while(n != nullptr){
         
-        if(n->getHashValue() == hashValue)
-            return true;
+        if(n->getHashValue() == hashValue){
 
+            if(newIndexOfVoidSpace == n->getIndexOfVoidSpace()){
+
+                int size = n->getSize();
+                unsigned int* auxTokens = n->getTokens();
+
+                if(tokensEquality(tokens,auxTokens,size))
+                    return true;
+
+            }
+            
+        }
+        
         n = n->getFather();
 
     }
@@ -127,16 +145,15 @@ unsigned int hashValue(unsigned int* tokens, unsigned int size){
     return sum;
 }
 
-unsigned int likelyHashValue(unsigned int* tokens, unsigned int size, int voidSpace, int rule){
+tuple<unsigned, unsigned*, unsigned> likelyHashValue(unsigned int* tokens, unsigned int size, int voidSpace, int rule){
 
     unsigned int* auxTokens;
 
     auxTokens = copyTokens(tokens, size);
 
-
     swap(auxTokens, voidSpace, voidSpace - rule);
 
-    return hashValue(auxTokens, size);
+    return make_tuple(hashValue(auxTokens, size), auxTokens, voidSpace - rule);
 
 }
 
@@ -166,12 +183,12 @@ bool checkSolution(unsigned int* tokens, unsigned int n){
     // searching on the array
     for(int i = 1; i < n; i++){
 
-        // if token equals to 0 we skip one iteraction
-        if(tokens[i] == 0)
+        // if token equals to 3 we skip one iteraction
+        if(tokens[i] == 3)
             continue;
 
         // if the color changes we count it
-        if(tokens[i] != token && token != 0)
+        if(tokens[i] != token && token != 3)
             flag++;
 
         token = tokens[i];
@@ -184,7 +201,7 @@ bool checkSolution(unsigned int* tokens, unsigned int n){
     }
     
     // if it changed color once it means that its not a solution
-    if(flag = 1)
+    if(flag == 1)
         return false;
 
     return true;
@@ -220,11 +237,22 @@ void printStack(stack<int>* s){
 
 }
 
+// ! Rules are based on void movement
 string ruleChar(int rule){
 
     if(rule > 0)
-        return 'E' + to_string((rule - 1));
+        return 'E' + to_string(abs((rule - 1)));
     else 
-        return 'D' + to_string(-rule - 1);
+        return 'D' + to_string(abs(-rule - 1));
+
+}
+
+bool tokensEquality(unsigned int* tokens, unsigned int* auxTokens, unsigned int n){
+
+    for(int i = 0; i < n/2; i++)            
+        if(auxTokens[i] != tokens[i] || auxTokens[n-1-i] != tokens[n-1-i])
+            return false;   
+
+    return true;
 
 }

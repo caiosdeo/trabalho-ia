@@ -26,7 +26,7 @@ int main(int argc, char const *argv[]) {
     cout << endl;
 
     // Pegando nó final
-    Table* final = backtracking(root);
+    Table* final = dfs(root);
 
     // Printando solução
     stack<int>* solution = getSolution(final);
@@ -35,9 +35,7 @@ int main(int argc, char const *argv[]) {
     // Imprimindo os tokens do nó final
     cout << "FINAL: ";
     printTable(final->getTokens(), final->getSize());
-    cout << endl;
-
-
+    cout << endl; 
 
     /*
 
@@ -88,18 +86,17 @@ int main(int argc, char const *argv[]) {
     */
 
     // unsigned int tokens[5][5] = {
-    //     {1,2,2,1,0},
-    //     {1,2,2,0,1},
-    //     {1,2,0,2,1},
-    //     {1,0,2,1,2},
-    //     {0,2,1,1,2}
+    //     {1,2,2,1,3},
+    //     {1,2,2,3,1},
+    //     {1,2,3,2,1},
+    //     {1,3,2,2,1},
+    //     {3,1,2,2,1}
     // };
 
     // for (int i = 0; i < 5; i++){
 
     //     for(int j = 0; j < 5; j++)
     //         cout << tokens[i][j];
-
     //     cout << " solução " << " " << checkSolution(tokens[i], 5) << endl;
     // }
     return 0;

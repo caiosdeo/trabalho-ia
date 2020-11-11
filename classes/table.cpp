@@ -1,6 +1,7 @@
 #include <iostream>
 #include "table.h"
 #include "../auxiliar_functions/aux.h"
+#include <cmath>
 
 using namespace std;
 
@@ -66,6 +67,10 @@ void Table::setApplicableRules(){
     this->applicableRules = findApplicableRules(this);
 }
 
+void Table::setCost(int rule){
+    this->cost = abs(rule);
+}
+
 // Getters
 unsigned int* Table::getTokens(){
     return this->tokens;
@@ -93,6 +98,10 @@ int Table::getRule(){
 
 list<int>* Table::getApplicableRules(){
     return this->applicableRules;
+}
+
+int Table::getCost(){
+    return this->cost;
 }
 
 // Other methods
