@@ -3,6 +3,7 @@
 #include <stack>
 #include <string>
 #include <tuple>
+#include <vector>
 
 /**
  * Dictionary to get a matching char for a token's value
@@ -159,3 +160,12 @@ string ruleChar(int rule);
  * @return bool if the tables are equal or not
  */
 bool tokensEquality(unsigned int* tokens, unsigned int* auxTokens, unsigned int n);
+
+/**
+ * Function to verifies if a node n has an ancestor
+ *
+ * @author eliascassis
+ * @param vec list of open Tables
+ * @return Table* to the Table with minor cost
+ */
+Table* getsTableWithMinorCost(vector<Table*> *vec);

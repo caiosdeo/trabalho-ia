@@ -256,3 +256,20 @@ bool tokensEquality(unsigned int* tokens, unsigned int* auxTokens, unsigned int 
     return true;
 
 }
+
+Table* getsTableWithMinorCost(vector<Table*> *vec){
+
+    int minor = 0;
+
+    for(int i = 1; i < vec->size(); i++){
+
+        if(vec->at(minor)->getCost() > vec->at(i)->getCost())
+            minor = i;
+
+    }
+    
+    Table* aux = vec->at(minor);
+    vec->erase(vec->begin() + minor);
+    return aux;
+
+}
