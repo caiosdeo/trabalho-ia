@@ -159,7 +159,7 @@ tuple<unsigned, unsigned*, unsigned> likelyHashValue(unsigned int* tokens, unsig
 
 unsigned int* copyTokens(unsigned int* tokens, unsigned int size){
 
-    unsigned int* auxTokens = new unsigned int(size);
+    unsigned int* auxTokens = (unsigned*)calloc(size, sizeof(unsigned));
 
     for(int i = 0; i < size; i++)
         auxTokens[i] = tokens[i];

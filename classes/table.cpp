@@ -12,7 +12,7 @@ Table::Table(unsigned int size){
     this->size = size;
     this->indexOfVoidSpace = size / 2;
     this->rule = 0;
-    this->tokens = new unsigned int(size);
+    this->tokens = (unsigned*)calloc(size, sizeof(unsigned));
     this->cost = 0;
 
     // Initializing the table
