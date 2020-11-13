@@ -4,24 +4,6 @@
 
 using namespace std;
 
-int menu(){
-
-    int option;
-
-    cout << "MENU" << endl;
-    cout << "----" << endl;
-    cout << "[1] Backtracking" << endl;
-    cout << "[2] BFS" << endl;
-    cout << "[3] DFS" << endl;
-    cout << "[0] Sair" << endl;
-
-    cin >> option;
-
-    int clear = system("clear");
-
-    return option;
-}
-
 void select(int option, int size){
 
 
@@ -30,6 +12,8 @@ void select(int option, int size){
 
         //BACKTRACKING
         case 1:{
+
+            cout << "BACKTRACKING" << endl;
                     
             // Executing backtracking flow
             backtrackingFlow(size); 
@@ -45,7 +29,9 @@ void select(int option, int size){
         //BFS
         case 2:{
 
-            // Executing backtracking flow
+            cout << "BFS" << endl;
+
+            // Executing bfs flow
             bfsFlow(size);
 
             // Wait screen
@@ -58,7 +44,9 @@ void select(int option, int size){
         //DFS
         case 3:{
 
-            // Executing backtracking flow
+            cout << "DFS" << endl;
+
+            // Executing DFS flow
             dfsFlow(size);
 
             // Wait screen
