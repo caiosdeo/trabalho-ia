@@ -273,3 +273,80 @@ Table* getsTableWithMinorCost(vector<Table*> *vec){
     return aux;
 
 }
+
+Table* getsTableWithMinorHeuristic(vector<Table*> *vec){
+
+    int minor = 0;
+
+    for(int i = 1; i < vec->size(); i++){
+
+        if(vec->at(minor)->getHeuristic() > vec->at(i)->getHeuristic())
+            minor = i;
+
+    }
+    
+    Table* aux = vec->at(minor);
+    vec->erase(vec->begin() + minor);
+    return aux;
+
+}
+
+// ?TOTHINK: the heuristic will be the biggest group of black tokens in the table
+// ?TOTHINK: modifies this function to keep the start and end ids of the group.
+int getBiggestGroupHeuristic(unsigned int* tokens, unsigned size){
+
+    int biggestGroupSize = 0;
+    int auxGroupSize = 0;
+    unsigned int auxTokens[size-1];
+
+    for(int i = 0, j = 0; i < size; i++)
+        if(tokens[i] != 3){
+            auxTokens[j] = tokens[i];
+            j++;
+        }
+
+    for(int i = 0; i < size - 1; i++){
+
+
+        bool whiteFollowedByBlack = auxTokens[i] == 1 && auxTokens[i+1] == 2;
+        
+        if(whiteFollowedByBlack){
+
+            i++;
+
+            while(auxTokens[i] == 2){
+                    auxGroupSize++;
+                i++;
+            }
+
+            if(auxTokens[i] == 1){
+                biggestGroupSize = (biggestGroupSize < auxGroupSize) ? auxGroupSize : biggestGroupSize;
+                auxGroupSize = 0;   
+            }
+            
+        }
+
+    }
+
+    return size/2 - biggestGroupSize;
+
+}
+
+// ?TOTHINK: the heuristic will be the number of color changes in the table
+int getColorChangeHeuristic(unsigned int* tokens, unsigned size){
+
+    int flag  = 0;
+
+    for(int i = 1; i < size; i++){
+
+        if(tokens[i] == 3 || tokens[i-1] == 3)
+            continue;
+
+        if(tokens[i] != tokens[i-1])
+            flag++;
+
+    }
+
+    return flag;
+
+}

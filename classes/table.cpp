@@ -33,6 +33,9 @@ Table::Table(unsigned int size){
     // Setting applicable rules
     this->setApplicableRules();
 
+    // Setting the heuristic value
+    this->setHeuristic(getBiggestGroupHeuristic(this->getTokens(),this->getSize()));
+
 }
 
 // Setters
@@ -71,6 +74,10 @@ void Table::setCost(int rule){
     this->cost = abs(rule);
 }
 
+void Table::setHeuristic(int h){
+    this->heuristicValue = h;
+}
+
 // Getters
 unsigned int* Table::getTokens(){
     return this->tokens;
@@ -104,16 +111,6 @@ int Table::getCost(){
     return this->cost;
 }
 
-// Other methods
-char Table::tokenChar(unsigned int token){
-
-    if(token == 0)
-        return '#';
-    else if(token == 1)
-        return 'W';
-    else if(token == 2)
-        return 'B';
-
-    return '#';
-
+int Table::getHeuristic(){
+    return this->heuristicValue;
 }

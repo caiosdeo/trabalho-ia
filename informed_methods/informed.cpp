@@ -1,53 +1,16 @@
-#include "uninformed.h"
+#include "informed.h"
 #include "../auxiliar_functions/aux.h"
 #include <iostream>
 #include <iterator>
 
 using namespace std;
 
-Table* backtracking(Table* root){
-
-    // Initializing N with root's pointer
-    Table* N = root;
-    bool sucess = false, failure = false; 
-
-    // While not sucess or failure
-    while(!(sucess || failure)){
-
-        // List of possibles operators to N
-        list<int>* rules = N->getApplicableRules();
-
-        if(!rules->empty()) {
-
-            // Picking first operator
-            int rule = rules->front();
-            rules->pop_front();
-            N = givesLight(N, rule);
-
-            if(checkSolution(N->getTokens(), N->getSize()))
-                sucess = true;
-
-        }else{
-
-			if (N == root)
-				failure = true;
-			else 
-				N = N->getFather();
-
-		}
-
-    }
-
-	return N;
-
-}
-
-Table* bfs(Table* root){
+Table* orderedSearch(Table* root){
 
     // Defining open list and pushing root node to it
-    queue<Table*> open;
+    vector<Table*> open;
     Table* N, *U;
-    open.push(root);
+    open.push_back(root);
     // Defining closed list
     list<Table*> closed;
     bool sucess = false, failure = false; 
@@ -60,60 +23,7 @@ Table* bfs(Table* root){
 
         else{
 
-            N = open.front(); // Gets the first element in the queue
-            open.pop(); // Removes the first element of the open list
-
-            if(checkSolution(N->getTokens(),N->getSize()))
-                sucess = true;
-
-            else{
-
-                // List of possibles operators to N
-                list<int>* rules = N->getApplicableRules();
-
-                while(!rules->empty()){
-
-                    // Picking first operator
-                    int rule = rules->front();
-                    rules->pop_front();
-                    // Generating new node and inserting it in the open list
-                    U = givesLight(N, rule);
-                    open.push(U);
-
-                }
-                // Inserting N in the closed list
-                closed.push_front(N);
-
-            }
-
-        }
-
-    }
-
-    return N;
-
-}
-
-Table* dfs(Table* root){
-
-    // Defining open list and pushing root node to it
-    stack<Table*> open;
-    Table* N, *U;
-    open.push(root);
-    // Defining closed list
-    list<Table*> closed;
-    bool sucess = false, failure = false; 
-
-    // While not sucess or failure
-    while(!(sucess || failure)){
-
-        if(open.empty())
-            failure = true;
-
-        else{
-
-            N = open.top(); // Gets the element at the top of the stack
-            open.pop(); // Removes the top element of the open list
+            N = getsTableWithMinorCost(&open);
 
             if(checkSolution(N->getTokens(),N->getSize()))
                 sucess = true;
@@ -130,7 +40,58 @@ Table* dfs(Table* root){
                     rules->pop_back();
                     // Generating new node and inserting it in the open list
                     U = givesLight(N, rule);
-                    open.push(U);
+                    open.push_back(U);
+
+                }
+                // Inserting N in the closed list
+                closed.push_front(N);
+
+            }
+
+        }
+
+    }
+
+    return N;
+
+}
+
+Table* greedySearch(Table* root){
+
+    // Defining open list and pushing root node to it
+    vector<Table*> open;
+    Table* N, *U;
+    open.push_back(root);
+    // Defining closed list
+    list<Table*> closed;
+    bool sucess = false, failure = false; 
+
+    // While not sucess or failure
+    while(!(sucess || failure)){
+
+        if(open.empty())
+            failure = true;
+
+        else{
+
+            N = getsTableWithMinorHeuristic(&open);
+
+            if(checkSolution(N->getTokens(),N->getSize()))
+                sucess = true;
+
+            else{
+
+                // List of possibles operators to N
+                list<int>* rules = N->getApplicableRules();
+
+                while(!rules->empty()){
+
+                    // Picking first operator
+                    int rule = rules->back();
+                    rules->pop_back();
+                    // Generating new node and inserting it in the open list
+                    U = givesLight(N, rule);
+                    open.push_back(U);
 
                 }
                 // Inserting N in the closed list

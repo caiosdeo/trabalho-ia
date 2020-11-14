@@ -169,3 +169,14 @@ bool tokensEquality(unsigned int* tokens, unsigned int* auxTokens, unsigned int 
  * @return Table* to the Table with minor cost
  */
 Table* getsTableWithMinorCost(vector<Table*> *vec);
+
+// TODO: documents here
+// ? solution black group minus biggest black group between whites 
+// ? number of whites between black
+int getBiggestGroupHeuristic(unsigned int* tokens, unsigned size);
+
+// TODO: documents here
+int getColorChangeHeuristic(unsigned int* tokens, unsigned size);
+
+// TODO: documents here
+Table* getsTableWithMinorHeuristic(vector<Table*> *vec);
