@@ -331,22 +331,3 @@ int getBiggestGroupHeuristic(unsigned int* tokens, unsigned size){
     return size/2 - biggestGroupSize;
 
 }
-
-// ?TOTHINK: the heuristic will be the number of color changes in the table
-int getColorChangeHeuristic(unsigned int* tokens, unsigned size){
-
-    int flag  = 0;
-
-    for(int i = 1; i < size; i++){
-
-        if(tokens[i] == 3 || tokens[i-1] == 3)
-            continue;
-
-        if(tokens[i] != tokens[i-1])
-            flag++;
-
-    }
-
-    return flag;
-
-}

@@ -176,7 +176,4 @@ Table* getsTableWithMinorCost(vector<Table*> *vec);
 int getBiggestGroupHeuristic(unsigned int* tokens, unsigned size);
 
 // TODO: documents here
-int getColorChangeHeuristic(unsigned int* tokens, unsigned size);
-
-// TODO: documents here
 Table* getsTableWithMinorHeuristic(vector<Table*> *vec);
