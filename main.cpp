@@ -27,7 +27,7 @@ int main(int argc, char const *argv[]) {
     cout << endl;
 
     // Pegando nó final
-    Table* final = orderedSearch(root);
+    Table* final = dfs(root);
 
     // Printando solução
     stack<int>* solution = getSolution(final);

@@ -3,5 +3,4 @@
 #include <list>
 #include <queue>
 
-Table* orderedSearch(Table* root);
 Table* greedySearch(Table* root);
