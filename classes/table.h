@@ -42,6 +42,7 @@ class Table{
         void setHeuristic(int h);
         // Other methods
         char tokenChar(unsigned int token);
+        void freeTable();
 
 };
 

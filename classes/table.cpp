@@ -5,6 +5,8 @@
 
 using namespace std;
 
+// TODO: destructor of the table
+// Constructor
 Table::Table(unsigned int size){
 
     // Initializing the class
@@ -36,6 +38,13 @@ Table::Table(unsigned int size){
     // Setting the heuristic value
     this->setHeuristic(getBiggestGroupHeuristic(this->getTokens(),this->getSize()));
 
+}
+
+// ?TOTHINK: how to do this?
+// Destructor
+void Table::freeTable(){
+    free(this->tokens);
+    this->tokens = nullptr;
 }
 
 // Setters

@@ -82,6 +82,7 @@ Table* bfs(Table* root){
 
                 }
                 // Inserting N in the closed list
+                N->freeTable();
                 closed.push_front(N);
 
             }
