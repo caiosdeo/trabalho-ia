@@ -24,10 +24,15 @@ Table* backtracking(Table* root){
             rules->pop_front();
             N = givesLight(N, rule);
 
-            if(checkSolution(N->getTokens(), N->getSize()))
-                sucess = true;
+            if(checkSolution(N->getTokens(), N->getSize())){
 
-        }else{
+                sucess = true;
+                break;
+
+            }
+
+        }
+        else{
 
 			if (N == root)
 				failure = true;
@@ -48,8 +53,6 @@ Table* bfs(Table* root){
     queue<Table*> open;
     Table* N, *U;
     open.push(root);
-    // Defining closed list
-    list<Table*> closed;
     bool sucess = false, failure = false; 
 
     // While not sucess or failure
@@ -63,8 +66,12 @@ Table* bfs(Table* root){
             N = open.front(); // Gets the first element in the queue
             open.pop(); // Removes the first element of the open list
 
-            if(checkSolution(N->getTokens(),N->getSize()))
+            if(checkSolution(N->getTokens(), N->getSize())){
+
                 sucess = true;
+                break;
+
+            }
 
             else{
 
@@ -81,9 +88,8 @@ Table* bfs(Table* root){
                     open.push(U);
 
                 }
-                // Inserting N in the closed list
+                // Free Table's tokens
                 N->freeTable();
-                closed.push_front(N);
 
             }
 
@@ -101,8 +107,6 @@ Table* dfs(Table* root){
     stack<Table*> open;
     Table* N, *U;
     open.push(root);
-    // Defining closed list
-    list<Table*> closed;
     bool sucess = false, failure = false; 
 
     // While not sucess or failure
@@ -134,8 +138,8 @@ Table* dfs(Table* root){
                     open.push(U);
 
                 }
-                // Inserting N in the closed list
-                closed.push_front(N);
+                // Free Table's tokens
+                N->freeTable();
 
             }
 
@@ -153,8 +157,6 @@ Table* orderedSearch(Table* root){
     vector<Table*> open;
     Table* N, *U;
     open.push_back(root);
-    // Defining closed list
-    list<Table*> closed;
     bool sucess = false, failure = false; 
 
     // While not sucess or failure
@@ -185,8 +187,8 @@ Table* orderedSearch(Table* root){
                     open.push_back(U);
 
                 }
-                // Inserting N in the closed list
-                closed.push_front(N);
+                // Free Table's tokens
+                N->freeTable();
 
             }
 
