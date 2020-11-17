@@ -11,8 +11,6 @@ Table* greedySearch(Table* root){
     vector<Table*> open;
     Table* N, *U;
     open.push_back(root);
-    // Defining closed list
-    list<Table*> closed;
     bool sucess = false, failure = false; 
 
     // While not sucess or failure
@@ -43,8 +41,8 @@ Table* greedySearch(Table* root){
                     open.push_back(U);
 
                 }
-                // Inserting N in the closed list
-                closed.push_front(N);
+                // Free Table's tokens
+                N->freeTable();
 
             }
 
