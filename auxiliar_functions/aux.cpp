@@ -18,7 +18,7 @@ char tokenChar(unsigned int token){
 
 void printTable(unsigned int* tokens, unsigned int size){
 
-    cout << "Table: |";
+    cout << "|";
     for( int i = 0; i < size; i++)
         cout << tokenChar(tokens[i]) << "|";
     cout << endl; 
