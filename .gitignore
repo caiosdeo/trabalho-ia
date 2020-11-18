@@ -31,5 +31,5 @@
 *.exe
 *.out
 *.app
-
+*.sh
 .vscode/
