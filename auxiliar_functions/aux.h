@@ -177,3 +177,6 @@ int getBiggestGroupHeuristic(unsigned int* tokens, unsigned size);
 
 // TODO: documents here
 Table* getsTableWithMinorHeuristic(vector<Table*> *vec);
+
+// TODO: documents here
+Table* getsTableWithMinorFunctionValue(vector<Table*> *vec);

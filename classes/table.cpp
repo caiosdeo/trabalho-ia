@@ -14,8 +14,9 @@ Table::Table(unsigned int size){
     this->size = size;
     this->indexOfVoidSpace = size / 2;
     this->rule = 0;
-    this->tokens = (unsigned*)calloc(size, sizeof(unsigned));
+    this->tokens = (unsigned*)malloc(size*sizeof(unsigned));
     this->cost = 0;
+    this->functionValue = 0;
 
     // Initializing the table
     // *NOTE: this implementation uses 0 to void spaces, 1 to white tokens and 2 to black tokens
@@ -31,20 +32,21 @@ Table::Table(unsigned int size){
 
     // Setting the hashValue
     this->setHashValue();
-
     // Setting applicable rules
     this->setApplicableRules();
-
     // Setting the heuristic value
     this->setHeuristic(getBiggestGroupHeuristic(this->getTokens(),this->getSize()));
 
 }
-
+// ! This is causing a big problem and do not solved the other one 
 // ?TOTHINK: how to do this?
 // Destructor
+Table::~Table(){
+
+}
+
 void Table::freeTable(){
-    free(this->tokens);
-    this->tokens = nullptr;
+    delete this->tokens;
 }
 
 // Setters
@@ -87,6 +89,10 @@ void Table::setHeuristic(int h){
     this->heuristicValue = h;
 }
 
+void Table::setFunctionValue(int value){
+    this->functionValue = value;
+}
+
 // Getters
 unsigned int* Table::getTokens(){
     return this->tokens;
@@ -122,4 +128,8 @@ int Table::getCost(){
 
 int Table::getHeuristic(){
     return this->heuristicValue;
+}
+
+int Table::getFunctionValue(){
+    return this->functionValue;
 }

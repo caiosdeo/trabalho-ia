@@ -16,6 +16,7 @@ class Table{
         unsigned int cost; // ?TOTHINK: the cost is the number of tokens hopped plus one || the rule plus one
         unsigned int hashValue;
         int heuristicValue;
+        int functionValue;
 
     public:
         // Constructor and destructor
@@ -30,6 +31,7 @@ class Table{
         int getRule();
         int getCost();
         int getHeuristic();
+        int getFunctionValue();
         list<int>* getApplicableRules();
         // Setters
         void setHashValue();       
@@ -40,6 +42,7 @@ class Table{
         void setApplicableRules(); //? Can generate errors
         void setCost(int rule);
         void setHeuristic(int h);
+        void setFunctionValue(int value);
         // Other methods
         char tokenChar(unsigned int token);
         void freeTable();

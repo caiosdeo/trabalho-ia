@@ -120,8 +120,12 @@ Table* dfs(Table* root){
             N = open.top(); // Gets the element at the top of the stack
             open.pop(); // Removes the top element of the open list
 
-            if(checkSolution(N->getTokens(),N->getSize()))
+            if(checkSolution(N->getTokens(), N->getSize())){
+
                 sucess = true;
+                break;
+
+            }
 
             else{
 
@@ -169,8 +173,12 @@ Table* orderedSearch(Table* root){
 
             N = getsTableWithMinorCost(&open);
 
-            if(checkSolution(N->getTokens(),N->getSize()))
+            if(checkSolution(N->getTokens(), N->getSize())){
+
                 sucess = true;
+                break;
+
+            }
 
             else{
 

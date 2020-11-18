@@ -48,6 +48,8 @@ Table* givesLight(Table* father, int rule){
     t->setIndexOfVoidSpace(fathersVoidSpace-rule);
     t->setRule(rule);
     t->setApplicableRules();
+    t->setCost(father->getCost()+rule);
+    t->setFunctionValue(t->getCost()+t->getHeuristic());
     
     return t;
 
@@ -281,6 +283,23 @@ Table* getsTableWithMinorHeuristic(vector<Table*> *vec){
     for(int i = 1; i < vec->size(); i++){
 
         if(vec->at(minor)->getHeuristic() > vec->at(i)->getHeuristic())
+            minor = i;
+
+    }
+    
+    Table* aux = vec->at(minor);
+    vec->erase(vec->begin() + minor);
+    return aux;
+
+}
+
+Table* getsTableWithMinorFunctionValue(vector<Table*> *vec){
+
+    int minor = 0;
+
+    for(int i = 1; i < vec->size(); i++){
+
+        if(vec->at(minor)->getFunctionValue() > vec->at(i)->getFunctionValue())
             minor = i;
 
     }
