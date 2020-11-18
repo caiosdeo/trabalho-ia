@@ -27,7 +27,7 @@ int main(int argc, char const *argv[]) {
     cout << endl;
 
     // Pegando nó final
-    Table* final = IDAStarSearch(root);
+    Table* final = backtracking(root);
 
     // Printando solução
     stack<int>* solution = getSolution(final);

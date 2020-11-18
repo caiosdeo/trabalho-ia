@@ -7,20 +7,21 @@ using namespace std;
 
 Table* backtracking(Table* root){
 
-    // Initializing N with root's pointer
-    Table* N = root;
+    Table* N = root; // Initializing N with root's pointer
     bool sucess = false, failure = false; 
+    list<int>* rules;
+    int rule;
 
     // While not sucess or failure
     while(!(sucess || failure)){
 
         // List of possibles operators to N
-        list<int>* rules = N->getApplicableRules();
+        rules = N->getApplicableRules();
 
-        if(!rules->empty()) {
+        if(!rules->empty()){
 
             // Picking first operator
-            int rule = rules->front();
+            rule = rules->front();
             rules->pop_front();
             N = givesLight(N, rule);
 
@@ -34,7 +35,7 @@ Table* backtracking(Table* root){
         }
         else{
 
-			if (N == root)
+			if(N == root)
 				failure = true;
 			else 
 				N = N->getFather();
