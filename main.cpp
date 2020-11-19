@@ -22,12 +22,21 @@ int main(int argc, char const *argv[]) {
 
     // Criando tabuleiro com o tamanho passado no argumento
     Table* root = new Table(atoi(argv[1]));
+    root->setFather(nullptr);
+    setInitialState(root);
+    root->setIndexOfVoidSpace(root->getSize()/2);
+    root->setRule(0);
+    root->setApplicableRules(findApplicableRules(root));
+    root->setHashValue(hashValue(root->getTokens(),root->getSize()));
+    root->setCost(0);
+    root->setHeuristic(getBiggestGroupHeuristic(root->getTokens(),root->getSize()));
+    root->setFunctionValue(root->getCost()+root->getHeuristic());
     cout << "RAIZ: ";
     printTable(root->getTokens(), root->getSize());
     cout << endl;
 
     // Pegando nó final
-    Table* final = backtracking(root);
+    Table* final = bfs(root);
 
     // Printando solução
     stack<int>* solution = getSolution(final);
@@ -55,6 +64,7 @@ int main(int argc, char const *argv[]) {
     //     // cout << endl;
     //     cout << " H = " << " " << getBiggestGroupHeuristic(tokens[i], 9) << endl;
     // }
-    // return 0;
+    
+    return 0;
     
 }

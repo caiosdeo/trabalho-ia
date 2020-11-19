@@ -1,75 +1,39 @@
 #include <iostream>
 #include "table.h"
-#include "../auxiliar_functions/aux.h"
 #include <cmath>
 
 using namespace std;
 
-// TODO: destructor of the table
 // Constructor
-Table::Table(unsigned int size){
+Table::Table(int size){
 
     // Initializing the class
-    this->father = nullptr;
-    this->size = size;
-    this->indexOfVoidSpace = size / 2;
-    this->rule = 0;
-    this->tokens = (unsigned*)malloc(size*sizeof(unsigned));
-    this->cost = 0;
-    this->functionValue = 0;
-
-    // Initializing the table
-    // *NOTE: this implementation uses 0 to void spaces, 1 to white tokens and 2 to black tokens
-    this->tokens[this->indexOfVoidSpace] = 3;
-
-    // Inserting the tokens in the list
-    for (int i = 0; i < this->size / 2; i++){
-
-        this->tokens[i] = 1;
-        this->tokens[this->size-1-i] = 2;
-
-    }
-
-    // Setting the hashValue
-    this->setHashValue();
-    // Setting applicable rules
-    this->setApplicableRules();
-    // Setting the heuristic value
-    this->setHeuristic(getBiggestGroupHeuristic(this->getTokens(),this->getSize()));
-
+    this->size = size; 
+    this->tokens = (int*)malloc(size*sizeof(int));
+    
 }
-// ! This is causing a big problem and do not solved the other one 
-// ?TOTHINK: how to do this?
+
 // Destructor
 Table::~Table(){
-
-}
-
-void Table::freeTable(){
-    delete this->tokens;
+    delete[] this->tokens;
+    delete[] this->applicableRules;
+    delete this;
 }
 
 // Setters
-// TODO: rethink hash value
-void Table::setHashValue(){
-    
-    unsigned int sum = 0;
-
-    for(int i = 0; i < size; i++)
-        sum += tokens[i]*(i+1);
-
-    this->hashValue = sum;
+void Table::setHashValue(int value){
+    this->hashValue = value;
 }
 
 void Table::setFather(Table* father){
     this->father = father;
 }
 
-void Table::setTokens(unsigned int* tokens){
+void Table::setTokens(int* tokens){
     this->tokens = tokens;
 }
 
-void Table::setIndexOfVoidSpace(unsigned int indexOfVoidSpace){
+void Table::setIndexOfVoidSpace(int indexOfVoidSpace){
     this->indexOfVoidSpace = indexOfVoidSpace;
 }
 
@@ -77,8 +41,8 @@ void Table::setRule(int rule){
     this->rule = rule;
 }
 
-void Table::setApplicableRules(){
-    this->applicableRules = findApplicableRules(this);
+void Table::setApplicableRules(list<int>* rules){
+    this->applicableRules = rules;
 }
 
 void Table::setCost(int rule){
@@ -94,19 +58,19 @@ void Table::setFunctionValue(int value){
 }
 
 // Getters
-unsigned int* Table::getTokens(){
+int* Table::getTokens(){
     return this->tokens;
 }
 
-unsigned int Table::getSize(){
+int Table::getSize(){
     return this->size;
 }
 
-unsigned int Table::getIndexOfVoidSpace(){
+int Table::getIndexOfVoidSpace(){
     return this->indexOfVoidSpace;
 }
 
-unsigned int Table::getHashValue(){
+int Table::getHashValue(){
     return this->hashValue;
 }
 

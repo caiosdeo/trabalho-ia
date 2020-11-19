@@ -11,7 +11,9 @@ Table* greedySearch(Table* root){
     vector<Table*> open;
     Table* N, *U;
     open.push_back(root);
-    bool sucess = false, failure = false; 
+    bool sucess = false, failure = false;
+    list<int>* rules;
+    int rule; 
 
     // While not sucess or failure
     while(!(sucess || failure)){
@@ -33,12 +35,12 @@ Table* greedySearch(Table* root){
             else{
 
                 // List of possibles operators to N
-                list<int>* rules = N->getApplicableRules();
+                rules = N->getApplicableRules();
 
                 while(!rules->empty()){
 
                     // Picking first operator
-                    int rule = rules->back();
+                    rule = rules->back();
                     rules->pop_back();
                     // Generating new node and inserting it in the open list
                     U = givesLight(N, rule);
@@ -46,7 +48,7 @@ Table* greedySearch(Table* root){
 
                 }
                 // Free Table's tokens
-                N->freeTable();
+                //N->freeTable();
 
             }
 
@@ -64,7 +66,9 @@ Table* AStarSearch(Table* root){
     vector<Table*> open;
     Table* N, *U;
     open.push_back(root);
-    bool sucess = false, failure = false; 
+    bool sucess = false, failure = false;
+    list<int>* rules;
+    int rule;  
 
     // While not sucess or failure
     while(!(sucess || failure)){
@@ -86,7 +90,7 @@ Table* AStarSearch(Table* root){
             else{
 
                 // List of possibles operators to N
-                list<int>* rules = N->getApplicableRules();
+                rules = N->getApplicableRules();
 
                 while(!rules->empty()){
 
@@ -99,7 +103,7 @@ Table* AStarSearch(Table* root){
 
                 }
                 // Free Table's tokens
-                N->freeTable();
+                //N->freeTable();
 
             }
 
@@ -148,7 +152,7 @@ Table* IDAStarSearch(Table* root){
                     cout << "auxFValue: " << auxFunctionValue << " auxLvl: " << auxLevel << endl;
                     aux = N;
                     N = N->getFather();
-                    aux->freeTable();
+                    //aux->freeTable();
                     delete aux;
 
                 }

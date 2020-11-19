@@ -3,7 +3,7 @@
 
 using namespace std;
 
-char tokenChar(unsigned int token){
+char tokenChar(int token){
     
     if(token == 3)
         return '#';
@@ -16,7 +16,7 @@ char tokenChar(unsigned int token){
 
 }
 
-void printTable(unsigned int* tokens, unsigned int size){
+void printTable(int* tokens, int size){
 
     cout << "Table: |";
     for( int i = 0; i < size; i++)
@@ -25,7 +25,7 @@ void printTable(unsigned int* tokens, unsigned int size){
 
 }
 
-void swap(unsigned int* tokens, int i, int j){
+void swap(int* tokens, int i, int j){
 
     tokens[i] = tokens[j]; // Inserts the token calculated by the rule in the void space
     tokens[j] = 3; // The void space is now the space where the token was located
@@ -34,20 +34,21 @@ void swap(unsigned int* tokens, int i, int j){
 
 Table* givesLight(Table* father, int rule){
 
-    // Aux variables
-    unsigned int fathersVoidSpace = father->getIndexOfVoidSpace();
-    unsigned int* fathersTokens = copyTokens(father->getTokens(), father->getSize());
     // New Table
     Table* t = new Table(father->getSize());
+    int* sonsTokens = t->getTokens();
+    // Aux variables
+    int fathersVoidSpace = father->getIndexOfVoidSpace();
+    copyTokens(father->getTokens(), sonsTokens, father->getSize());
     // Setting attributes
     t->setFather(father);
     // This is to apply the rule to its tokens array
-    swap(fathersTokens,fathersVoidSpace,fathersVoidSpace-rule);
-    t->setTokens(fathersTokens);
-    t->setHashValue();
+    swap(sonsTokens,fathersVoidSpace,fathersVoidSpace-rule);
+    t->setTokens(sonsTokens);
+    t->setHashValue(hashValue(sonsTokens,t->getSize()));
     t->setIndexOfVoidSpace(fathersVoidSpace-rule);
     t->setRule(rule);
-    t->setApplicableRules();
+    t->setApplicableRules(findApplicableRules(t));
     t->setCost(father->getCost()+rule);
     t->setFunctionValue(t->getCost()+t->getHeuristic());
     
@@ -55,63 +56,64 @@ Table* givesLight(Table* father, int rule){
 
 }
 
+// ! Maybe this function change the parameters
 list<int>* findApplicableRules(Table* n){
 
+    int auxTokens[n->getSize()];
     list<int>* rules = new list<int>;
-    unsigned int numberOfJumps = (n->getSize() / 2) - 1;
-    unsigned int voidSpaceIndex = n->getIndexOfVoidSpace();
+    int numberOfJumps = (n->getSize() / 2) - 1;
+    int voidSpaceIndex = n->getIndexOfVoidSpace();
 
     // ?TOTHINK: using the x-axis as a guider to the order of the rules
     // Verifying if are space to search by the left
     if(voidSpaceIndex == 0)
         // By the right
-        searchByTheRight(rules, n, numberOfJumps);
+        searchByTheRight(rules, n, numberOfJumps, auxTokens);
     else if(voidSpaceIndex == n->getSize()-1)
         // By the left
-        searchByTheLeft(rules, n, numberOfJumps);
+        searchByTheLeft(rules, n, numberOfJumps, auxTokens);
     else{
-        searchByTheRight(rules, n, numberOfJumps);
-        searchByTheLeft(rules, n, numberOfJumps);
+        searchByTheRight(rules, n, numberOfJumps, auxTokens);
+        searchByTheLeft(rules, n, numberOfJumps, auxTokens);
     }
 
     return rules;
 
 }
 
-void searchByTheLeft(list<int>* rules, Table* n, unsigned int numberOfJumps){
+void searchByTheLeft(list<int>* rules, Table* n, int numberOfJumps, int* auxTokens){
 
     // This loop searches the rules by the left
     for(int counter = 0, i = n->getIndexOfVoidSpace()-1; counter <= numberOfJumps && i >= 0; i--, counter++){
         
 
         // 0 - likelyHashValue
-        // 1 - likelyTokens
-        // 2 - likelyVoidSpace
-        tuple<unsigned, unsigned*, unsigned> likely = likelyHashValue(n->getTokens(), n->getSize(), n->getIndexOfVoidSpace(), counter+1);
+        // 1 - likelyVoidSpace
+        tuple<int, int> likely = likelyHashValue(n->getTokens(), auxTokens, n->getSize(), n->getIndexOfVoidSpace(), counter+1);
 
-        if(!isAncestor(n, get<0>(likely), get<1>(likely), get<2>(likely)))
+        if(!isAncestor(n, get<0>(likely), auxTokens, get<1>(likely)))
             rules->push_back(counter+1);
         
     }
 
 }
 
-void searchByTheRight(list<int>* rules, Table* n, unsigned int numberOfJumps){
+void searchByTheRight(list<int>* rules, Table* n, int numberOfJumps, int* auxTokens){
 
 
     // This loop searches the rules by the right
     for(int counter = 0, i = n->getIndexOfVoidSpace()+1; counter <= numberOfJumps && i < n->getSize(); i++, counter++){
 
-        tuple<unsigned, unsigned*, unsigned> likely = likelyHashValue(n->getTokens(),n->getSize(),n->getIndexOfVoidSpace(),-(counter+1));
+        tuple<int, int> likely = likelyHashValue(n->getTokens(), auxTokens ,n->getSize(), n->getIndexOfVoidSpace(),-(counter+1));
 
-        if(!isAncestor(n, get<0>(likely), get<1>(likely), get<2>(likely)))
+        if(!isAncestor(n, get<0>(likely), auxTokens, get<1>(likely)))
             rules->push_back(-(counter+1));
         
     }
 
 }
 
-bool isAncestor(Table* n, unsigned int hashValue, unsigned int* tokens, unsigned int newIndexOfVoidSpace){
+bool isAncestor(Table* n, int hashValue, int* tokens, int newIndexOfVoidSpace){
 
     while(n != nullptr){
         
@@ -120,7 +122,7 @@ bool isAncestor(Table* n, unsigned int hashValue, unsigned int* tokens, unsigned
             if(newIndexOfVoidSpace == n->getIndexOfVoidSpace()){
 
                 int size = n->getSize();
-                unsigned int* auxTokens = n->getTokens();
+                int* auxTokens = n->getTokens();
 
                 if(tokensEquality(tokens,auxTokens,size))
                     return true;
@@ -137,9 +139,9 @@ bool isAncestor(Table* n, unsigned int hashValue, unsigned int* tokens, unsigned
 
 }
 
-unsigned int hashValue(unsigned int* tokens, unsigned int size){
+int hashValue(int* tokens, int size){
 
-    unsigned int sum = 0;
+    int sum = 0;
 
     for(int i = 0; i < size; i++)
         sum += tokens[i]*(i+1);
@@ -147,30 +149,24 @@ unsigned int hashValue(unsigned int* tokens, unsigned int size){
     return sum;
 }
 
-tuple<unsigned, unsigned*, unsigned> likelyHashValue(unsigned int* tokens, unsigned int size, int voidSpace, int rule){
+tuple<int, int> likelyHashValue(int* tokens, int* likelyTokens, int size, int voidSpace, int rule){
 
-    unsigned int* auxTokens;
+    copyTokens(tokens, likelyTokens, size);
 
-    auxTokens = copyTokens(tokens, size);
+    swap(likelyTokens, voidSpace, voidSpace - rule);
 
-    swap(auxTokens, voidSpace, voidSpace - rule);
-
-    return make_tuple(hashValue(auxTokens, size), auxTokens, voidSpace - rule);
+    return make_tuple(hashValue(likelyTokens, size), voidSpace - rule);
 
 }
 
-unsigned int* copyTokens(unsigned int* tokens, unsigned int size){
-
-    unsigned int* auxTokens = (unsigned*)calloc(size, sizeof(unsigned));
+void copyTokens(int* tokens, int* copiedTokens, int size){
 
     for(int i = 0; i < size; i++)
-        auxTokens[i] = tokens[i];
-
-    return auxTokens;
+        copiedTokens[i] = tokens[i];
 
 }
 
-bool checkSolution(unsigned int* tokens, unsigned int n){
+bool checkSolution(int* tokens, int n){
 
     // aux token for comparison
     int token = tokens[0];
@@ -249,7 +245,7 @@ string ruleChar(int rule){
 
 }
 
-bool tokensEquality(unsigned int* tokens, unsigned int* auxTokens, unsigned int n){
+bool tokensEquality(int* tokens, int* auxTokens, int n){
 
     for(int i = 0; i < n/2; i++)            
         if(auxTokens[i] != tokens[i] || auxTokens[n-1-i] != tokens[n-1-i])
@@ -310,13 +306,11 @@ Table* getsTableWithMinorFunctionValue(vector<Table*> *vec){
 
 }
 
-// ?TOTHINK: the heuristic will be the biggest group of black tokens in the table
-// ?TOTHINK: modifies this function to keep the start and end ids of the group.
-int getBiggestGroupHeuristic(unsigned int* tokens, unsigned size){
+int getBiggestGroupHeuristic(int* tokens, int size){
 
     int biggestGroupSize = 0;
     int auxGroupSize = 0;
-    unsigned int auxTokens[size-1];
+    int auxTokens[size-1];
 
     for(int i = 0, j = 0; i < size; i++)
         if(tokens[i] != 3){
@@ -348,5 +342,20 @@ int getBiggestGroupHeuristic(unsigned int* tokens, unsigned size){
     }
 
     return size/2 - biggestGroupSize;
+
+}
+// ! Maybe the parameter will be the tokens
+void setInitialState(Table* root){
+
+    int size =  root->getSize();
+    int* auxTokens = root->getTokens();
+    auxTokens[root->getIndexOfVoidSpace()] = 3;
+    // Inserting the tokens in the list
+    for (int i = 0; i < size / 2; i++){
+
+        auxTokens[i] = 1;
+        auxTokens[size-1-i] = 2;
+
+    }
 
 }

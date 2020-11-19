@@ -5,47 +5,45 @@
 using namespace std;
 
 class Table{
-
+    // ! Pay attention on this attributes and methods
     private:
-        unsigned int size;
+        int size;
         Table* father;
-        unsigned int* tokens;
-        unsigned int indexOfVoidSpace;
+        int* tokens;
+        int indexOfVoidSpace;
         int rule; // Rule that generates the atual state
         list<int>* applicableRules;
-        unsigned int cost; // ?TOTHINK: the cost is the number of tokens hopped plus one || the rule plus one
-        unsigned int hashValue;
+        int cost; // ?TOTHINK: the cost is the number of tokens hopped plus one || the rule plus one
+        int hashValue;
         int heuristicValue;
         int functionValue;
 
     public:
-        // Constructor and destructor
-        Table(unsigned int size);
+        // Constructor 
+        Table(int size);
+        // Destructor
         ~Table();
         // Getters
         Table* getFather();
-        unsigned int* getTokens();
-        unsigned int getSize();
-        unsigned int getIndexOfVoidSpace();
-        unsigned int getHashValue();
+        int* getTokens();
+        int getSize();
+        int getIndexOfVoidSpace();
+        int getHashValue();
         int getRule();
         int getCost();
         int getHeuristic();
         int getFunctionValue();
         list<int>* getApplicableRules();
         // Setters
-        void setHashValue();       
+        void setHashValue(int value);       
         void setFather(Table* father);
-        void setTokens(unsigned int* tokens);
-        void setIndexOfVoidSpace(unsigned int indexOfVoidSpace);
+        void setTokens(int* tokens);
+        void setIndexOfVoidSpace(int indexOfVoidSpace);
         void setRule(int rule);
-        void setApplicableRules(); //? Can generate errors
+        void setApplicableRules(list<int>* rules); //? Can generate errors
         void setCost(int rule);
         void setHeuristic(int h);
         void setFunctionValue(int value);
-        // Other methods
-        char tokenChar(unsigned int token);
-        void freeTable();
 
 };
 

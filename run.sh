@@ -1,2 +1,2 @@
-g++ -Ofast main.cpp */*.cpp
-./a.out 5
+g++ main.cpp */*.cpp
+./a.out 1001
