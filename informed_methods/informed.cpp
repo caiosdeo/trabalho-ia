@@ -5,18 +5,18 @@
 
 using namespace std;
 
-Table* greedySearch(Table* root){
+Table* greedySearch(Table* root, int* expandedNodes, int* visitedNodes, int* numberOfLeafs){
 
     // Defining open list and pushing root node to it
     vector<Table*> open;
     Table* N, *U;
     open.push_back(root);
-    bool sucess = false, failure = false;
+    bool success = false, failure = false;
     list<int>* rules;
     int rule; 
 
-    // While not sucess or failure
-    while(!(sucess || failure)){
+    // While not success or failure
+    while(!(success || failure)){
 
         if(open.empty())
             failure = true;
@@ -24,10 +24,13 @@ Table* greedySearch(Table* root){
         else{
 
             N = getsTableWithMinorHeuristic(&open);
+            (*visitedNodes)++;
+            N->setVisited(true);
 
             if(checkSolution(N->getTokens(), N->getSize())){
 
-                sucess = true;
+                success = true;
+                (*numberOfLeafs) += open.size();
                 break;
 
             }
@@ -37,6 +40,9 @@ Table* greedySearch(Table* root){
                 // List of possibles operators to N
                 rules = N->getApplicableRules();
 
+                if(rules->empty())
+                    (*numberOfLeafs)++;
+
                 while(!rules->empty()){
 
                     // Picking first operator
@@ -45,10 +51,9 @@ Table* greedySearch(Table* root){
                     // Generating new node and inserting it in the open list
                     U = givesLight(N, rule);
                     open.push_back(U);
+                    (*expandedNodes)++;
 
                 }
-                // Free Table's tokens
-                //N->freeTable();
 
             }
 
@@ -60,18 +65,18 @@ Table* greedySearch(Table* root){
 
 }
 
-Table* AStarSearch(Table* root){
+Table* AStarSearch(Table* root, int* expandedNodes, int* visitedNodes, int* numberOfLeafs){
 
     // Defining open list and pushing root node to it
     vector<Table*> open;
     Table* N, *U;
     open.push_back(root);
-    bool sucess = false, failure = false;
+    bool success = false, failure = false;
     list<int>* rules;
     int rule;  
 
-    // While not sucess or failure
-    while(!(sucess || failure)){
+    // While not success or failure
+    while(!(success || failure)){
 
         if(open.empty())
             failure = true;
@@ -79,10 +84,13 @@ Table* AStarSearch(Table* root){
         else{
 
             N = getsTableWithMinorFunctionValue(&open);
+            (*visitedNodes)++;
+            N->setVisited(true);
 
             if(checkSolution(N->getTokens(), N->getSize())){
 
-                sucess = true;
+                success = true;
+                (*numberOfLeafs) += open.size();
                 break;
 
             }
@@ -92,6 +100,9 @@ Table* AStarSearch(Table* root){
                 // List of possibles operators to N
                 rules = N->getApplicableRules();
 
+                if(rules->empty())
+                    (*numberOfLeafs)++;
+
                 while(!rules->empty()){
 
                     // Picking first operator
@@ -100,10 +111,9 @@ Table* AStarSearch(Table* root){
                     // Generating new node and inserting it in the open list
                     U = givesLight(N, rule);
                     open.push_back(U);
+                    (*expandedNodes)++;
 
                 }
-                // Free Table's tokens
-                //N->freeTable();
 
             }
 
@@ -119,13 +129,13 @@ Table* IDAStarSearch(Table* root){
 
     Table* N = root;
     Table* aux;
-    bool sucess = false, failure = false, isFirst = true; 
+    bool success = false, failure = false, isFirst = true; 
     int level = root->getHeuristic(), oldLevel = -1;
     int auxLevel = level;
     int auxFunctionValue;
     cout << "lvl inicial: " << level << endl;
-    // While not sucess or failure
-    while(!(sucess || failure)){
+    // While not success or failure
+    while(!(success || failure)){
 
         if(oldLevel == level)
             failure = true;
@@ -134,7 +144,7 @@ Table* IDAStarSearch(Table* root){
 
             if(checkSolution(N->getTokens(), N->getSize()) && N->getFunctionValue() <= level){
                 cout << "E SOLUCAO!" << endl;
-                sucess = true;
+                success = true;
                 break;
 
             }
@@ -152,7 +162,6 @@ Table* IDAStarSearch(Table* root){
                     cout << "auxFValue: " << auxFunctionValue << " auxLvl: " << auxLevel << endl;
                     aux = N;
                     N = N->getFather();
-                    //aux->freeTable();
                     delete aux;
 
                 }

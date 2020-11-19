@@ -133,16 +133,19 @@ bool checkSolution(int* tokens, int n);
  *
  * @author eliascassis
  * @param n the Table
+ * @param root root table
+ * return solution stack
  */
-stack<int>* getSolution(Table* n);
+stack<int>* getSolution(Table* n, Table* root);
 
 /**
  * Print the stack
  *
  * @author caiosdeo
  * @param int stack<int>* stack with int
+ * @return cost custo da solução
  */
-void printStack(stack<int>* s);
+int printStack(stack<int>* s);
 
 /**
  * Dictionary to get a matching char for a rule's value
@@ -173,16 +176,38 @@ bool tokensEquality(int* tokens, int* auxTokens, int n);
  */
 Table* getsTableWithMinorCost(vector<Table*> *vec);
 
-// TODO: documents here
-// ? solution black group minus biggest black group between whites 
-// ? number of whites between black
+/**
+ * Function that calculates the heuristics for a table's token
+ *
+ * @author eliascassis
+ * @param tokens Table's tokens
+ * @param size Table's size
+ * @return heuristic value
+ */
 int getBiggestGroupHeuristic(int* tokens, int size);
 
-// TODO: documents here
+/**
+ * Function that gets the table with minor heuristic value
+ *
+ * @author eliascassis
+ * @param vec Table's vector
+ * @return Table with minor heuristic value
+ */
 Table* getsTableWithMinorHeuristic(vector<Table*> *vec);
 
-// TODO: documents here
+/**
+ * Function that gets the table with minor function value
+ *
+ * @author eliascassis
+ * @param vec Table's vector
+ * @return Table with minor function value
+ */
 Table* getsTableWithMinorFunctionValue(vector<Table*> *vec);
 
-// TODO: documents here
+/**
+ * Function to set the initial state for a Table (root table)
+ *
+ * @author eliascassis
+ * @param root Table's pointer
+ */
 void setInitialState(Table* root);

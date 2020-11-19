@@ -8,11 +8,13 @@
 #include <list>
 #include <iterator>
 #include <stack>
+#include <iomanip>
 
 using namespace std;
 
 void select(int option, int size){
 
+    // Printing table size
     cout << "TAMANHO: " << size << endl;
 
     // Creating root
@@ -22,8 +24,8 @@ void select(int option, int size){
 
     // setting root info
     root->setFather(nullptr);
-    setInitialState(root);
     root->setIndexOfVoidSpace(root->getSize()/2);
+    setInitialState(root);
     root->setRule(0);
     root->setApplicableRules(findApplicableRules(root));
     root->setHashValue(hashValue(root->getTokens(),root->getSize()));
@@ -31,6 +33,11 @@ void select(int option, int size){
     root->setHeuristic(getBiggestGroupHeuristic(root->getTokens(),root->getSize()));
     root->setFunctionValue(root->getCost()+root->getHeuristic());
     
+    // Statistics Variables
+    int numberOfExpandedNodes = 0;
+    int numberOfVisitedNodes = 0;
+    int numberOfLeafs = 0;
+
     // Printing Table tokens    
     cout << "RAIZ: ";
     printTable(root->getTokens(), root->getSize());
@@ -46,7 +53,7 @@ void select(int option, int size){
         case 1:{
 
             cout << "BACKTRACKING" << endl;
-            final = backtracking(root); 
+            final = backtracking(root, &numberOfExpandedNodes, &numberOfVisitedNodes, &numberOfLeafs); 
             break;
 
         }
@@ -56,9 +63,8 @@ void select(int option, int size){
         case 2:{
 
             cout << "BFS" << endl;
-
             // Executing bfs
-            final = bfs(root);            
+            final = bfs(root, &numberOfExpandedNodes, &numberOfVisitedNodes, &numberOfLeafs);            
             break;
         }
             
@@ -67,9 +73,8 @@ void select(int option, int size){
         case 3:{
 
             cout << "DFS" << endl;
-
             // Executing DFS 
-            final = dfs(root);          
+            final = dfs(root, &numberOfExpandedNodes, &numberOfVisitedNodes, &numberOfLeafs);          
             break;
         }
 
@@ -77,31 +82,27 @@ void select(int option, int size){
         case 4:{
 
             cout << "BUSCA ORDENADA" << endl;
-
-            final = orderedSearch(root);          
+            final = orderedSearch(root, &numberOfExpandedNodes, &numberOfVisitedNodes, &numberOfLeafs);          
             break;
         }
 
         case 5:{
 
             cout << "BUSCA GULOSA" << endl;
-
-            final = greedySearch(root);          
+            final = greedySearch(root, &numberOfExpandedNodes, &numberOfVisitedNodes, &numberOfLeafs);          
             break;
         }
 
         case 6:{
 
             cout << "A*" << endl;
-
-            final = AStarSearch(root);          
+            final = AStarSearch(root, &numberOfExpandedNodes, &numberOfVisitedNodes, &numberOfLeafs);          
             break;
         }
 
         case 7:{
 
             cout << "IDA*" << endl;
-
             final = IDAStarSearch(root);          
             break;
         }
@@ -118,21 +119,24 @@ void select(int option, int size){
     auto duration = chrono::duration_cast<chrono::milliseconds>(stop - start);
 
     // Printing solution
-    stack<int>* solution = getSolution(final);
+    stack<int>* solution = getSolution(final, root);
 
     // Printing solution table
     cout << "FINAL: ";
     printTable(final->getTokens(), final->getSize());
     cout << endl;
+
+    // Statistics Variables
+    int solutionSize = solution->size();
     
     cout << "ESTATÍSTICAS: " << endl;
     cout << "Caminho: ";
-    printStack(solution);
-    cout << "Profundidade da solução: " << endl;
-    cout << "Custo da solução: " << endl;
-    cout << "Total de nós expandidos: " << endl;
-    cout << "Total de nós visitados: " << endl;
-    cout << "Valor médio de ramificação: " << endl;
+    int solutionCost = printStack(solution);
+    cout << "Profundidade da solução: " << solutionSize << endl;
+    cout << "Custo da solução: " << solutionCost << endl; 
+    cout << "Total de nós expandidos: " << numberOfExpandedNodes << endl;
+    cout << "Total de nós visitados: " << numberOfVisitedNodes << endl;
+    cout << "Valor médio de ramificação: " <<  setprecision(3) << float(numberOfExpandedNodes)/(numberOfExpandedNodes + 1 - numberOfLeafs) << endl;
     cout << "Tempo de execução: " << duration.count() << " ms" << endl;
 
     // Wait screen

@@ -5,29 +5,40 @@
 
 using namespace std;
 
-Table* backtracking(Table* root){
+Table* backtracking(Table* root, int* expandedNodes, int* visitedNodes, int* numberOfLeafs){
 
     Table* N = root; // Initializing N with root's pointer
-    bool sucess = false, failure = false; 
+    bool success = false, failure = false; 
     list<int>* rules;
     int rule;
 
-    // While not sucess or failure
-    while(!(sucess || failure)){
+    // While not success or failure
+    while(!(success || failure)){
 
         // List of possibles operators to N
         rules = N->getApplicableRules();
 
+        if(!N->getVisited()){
+
+            (*visitedNodes)++;
+            N->setVisited(true);
+
+            if(rules->empty())
+                (*numberOfLeafs)++;
+
+        }
+        
         if(!rules->empty()){
 
             // Picking first operator
             rule = rules->front();
             rules->pop_front();
             N = givesLight(N,rule);
+            (*expandedNodes)++;
 
             if(checkSolution(N->getTokens(), N->getSize())){
 
-                sucess = true;
+                success = true;
                 break;
 
             }
@@ -48,18 +59,18 @@ Table* backtracking(Table* root){
 
 }
 
-Table* bfs(Table* root){
+Table* bfs(Table* root, int* expandedNodes, int* visitedNodes, int* numberOfLeafs){
 
     // Defining open list and pushing root node to it
     queue<Table*> open;
     Table* N, *U;
     open.push(root);
-    bool sucess = false, failure = false;
+    bool success = false, failure = false;
     list<int>* rules; 
     int rule;
 
-    // While not sucess or failure
-    while(!(sucess || failure)){
+    // While not success or failure
+    while(!(success || failure)){
 
         if(open.empty())
             failure = true;
@@ -68,10 +79,13 @@ Table* bfs(Table* root){
 
             N = open.front(); // Gets the first element in the queue
             open.pop(); // Removes the first element of the open list
+            (*visitedNodes)++;
+            N->setVisited(true);
 
             if(checkSolution(N->getTokens(), N->getSize())){
 
-                sucess = true;
+                success = true;
+                (*numberOfLeafs) += open.size();
                 break;
 
             }
@@ -81,6 +95,9 @@ Table* bfs(Table* root){
                 // List of possibles operators to N
                 rules = N->getApplicableRules();
 
+                if(rules->empty())
+                    (*numberOfLeafs)++;
+                    
                 while(!rules->empty()){
 
                     // Picking first operator
@@ -89,10 +106,9 @@ Table* bfs(Table* root){
                     // Generating new node and inserting it in the open list
                     U = givesLight(N, rule);
                     open.push(U);
-
+                    (*expandedNodes)++;
+                    
                 }
-                // Free Table's tokens
-                //N->freeTable();
 
             }
 
@@ -104,18 +120,18 @@ Table* bfs(Table* root){
 
 }
 
-Table* dfs(Table* root){
+Table* dfs(Table* root, int* expandedNodes, int* visitedNodes, int* numberOfLeafs){
 
     // Defining open list and pushing root node to it
     stack<Table*> open;
     Table* N, *U;
     open.push(root);
-    bool sucess = false, failure = false; 
+    bool success = false, failure = false; 
     list<int>* rules;
     int rule;
 
-    // While not sucess or failure
-    while(!(sucess || failure)){
+    // While not success or failure
+    while(!(success || failure)){
 
         if(open.empty())
             failure = true;
@@ -124,10 +140,13 @@ Table* dfs(Table* root){
 
             N = open.top(); // Gets the element at the top of the stack
             open.pop(); // Removes the top element of the open list
+            (*visitedNodes)++;
+            N->setVisited(true);
 
             if(checkSolution(N->getTokens(), N->getSize())){
 
-                sucess = true;
+                success = true;
+                (*numberOfLeafs) += open.size();
                 break;
 
             }
@@ -136,6 +155,9 @@ Table* dfs(Table* root){
 
                 // List of possibles operators to N
                 rules = N->getApplicableRules();
+
+                if(rules->empty())
+                    (*numberOfLeafs)++;
 
                 while(!rules->empty()){
 
@@ -145,10 +167,9 @@ Table* dfs(Table* root){
                     // Generating new node and inserting it in the open list
                     U = givesLight(N, rule);
                     open.push(U);
+                    (*expandedNodes)++;
 
                 }
-                // Free Table's tokens
-                //N->freeTable();
 
             }
 
@@ -160,18 +181,18 @@ Table* dfs(Table* root){
 
 }
 
-Table* orderedSearch(Table* root){
+Table* orderedSearch(Table* root, int* expandedNodes, int* visitedNodes, int* numberOfLeafs){
 
     // Defining open list and pushing root node to it
     vector<Table*> open;
     Table* N, *U;
     open.push_back(root);
-    bool sucess = false, failure = false; 
+    bool success = false, failure = false; 
     list<int>* rules;
     int rule;
 
-    // While not sucess or failure
-    while(!(sucess || failure)){
+    // While not success or failure
+    while(!(success || failure)){
 
         if(open.empty())
             failure = true;
@@ -179,10 +200,13 @@ Table* orderedSearch(Table* root){
         else{
 
             N = getsTableWithMinorCost(&open);
+            (*visitedNodes)++;
+            N->setVisited(true);
 
             if(checkSolution(N->getTokens(), N->getSize())){
 
-                sucess = true;
+                success = true;
+                (*numberOfLeafs) += open.size();
                 break;
 
             }
@@ -191,6 +215,9 @@ Table* orderedSearch(Table* root){
 
                 // List of possibles operators to N
                 rules = N->getApplicableRules();
+
+                if(rules->empty())
+                    (*numberOfLeafs)++;
 
                 while(!rules->empty()){
 
@@ -200,10 +227,9 @@ Table* orderedSearch(Table* root){
                     // Generating new node and inserting it in the open list
                     U = givesLight(N, rule);
                     open.push_back(U);
+                    (*expandedNodes)++;
 
                 }
-                // Free Table's tokens
-                //N->freeTable();
 
             }
 

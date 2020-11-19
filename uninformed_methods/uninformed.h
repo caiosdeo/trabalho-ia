@@ -3,7 +3,7 @@
 #include <list>
 #include <queue>
 
-Table* backtracking(Table* root);
-Table* bfs(Table* root);
-Table* dfs(Table* root);
-Table* orderedSearch(Table* root);
+Table* backtracking(Table* root, int* expandedNodes, int* visitedNodes, int* numberOfLeafs);
+Table* bfs(Table* root, int* expandedNodes, int* visitedNodes, int* numberOfLeafs);
+Table* dfs(Table* root, int* expandedNodes, int* visitedNodes, int* numberOfLeafs);
+Table* orderedSearch(Table* root, int* expandedNodes, int* visitedNodes, int* numberOfLeafs);

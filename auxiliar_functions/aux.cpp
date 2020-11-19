@@ -12,7 +12,7 @@ char tokenChar(int token){
     else if(token == 2)
         return 'B';
 
-    return '#';
+    return '@';
 
 }
 
@@ -36,14 +36,19 @@ Table* givesLight(Table* father, int rule){
 
     // New Table
     Table* t = new Table(father->getSize());
-    int* sonsTokens = t->getTokens();
+
     // Aux variables
+    int* sonsTokens = t->getTokens();
     int fathersVoidSpace = father->getIndexOfVoidSpace();
     copyTokens(father->getTokens(), sonsTokens, father->getSize());
+
     // Setting attributes
     t->setFather(father);
-    // This is to apply the rule to its tokens array
-    swap(sonsTokens,fathersVoidSpace,fathersVoidSpace-rule);
+
+    // Apply the rule to sons' tokens array
+    swap(sonsTokens, fathersVoidSpace, fathersVoidSpace-rule);
+
+    // Initializing attributes
     t->setTokens(sonsTokens);
     t->setHashValue(hashValue(sonsTokens,t->getSize()));
     t->setIndexOfVoidSpace(fathersVoidSpace-rule);
@@ -59,13 +64,14 @@ Table* givesLight(Table* father, int rule){
 // ! Maybe this function change the parameters
 list<int>* findApplicableRules(Table* n){
 
+    // Auxiliar variables
     int auxTokens[n->getSize()];
     list<int>* rules = new list<int>;
     int numberOfJumps = (n->getSize() / 2) - 1;
     int voidSpaceIndex = n->getIndexOfVoidSpace();
 
-    // ?TOTHINK: using the x-axis as a guider to the order of the rules
-    // Verifying if are space to search by the left
+    // We use the x-axis as a guider to the order of the rules
+    // Verifying if there are space to search 
     if(voidSpaceIndex == 0)
         // By the right
         searchByTheRight(rules, n, numberOfJumps, auxTokens);
@@ -86,11 +92,10 @@ void searchByTheLeft(list<int>* rules, Table* n, int numberOfJumps, int* auxToke
     // This loop searches the rules by the left
     for(int counter = 0, i = n->getIndexOfVoidSpace()-1; counter <= numberOfJumps && i >= 0; i--, counter++){
         
-
-        // 0 - likelyHashValue
-        // 1 - likelyVoidSpace
+        // It's necessary to get the possible hash value and void index
         tuple<int, int> likely = likelyHashValue(n->getTokens(), auxTokens, n->getSize(), n->getIndexOfVoidSpace(), counter+1);
 
+        // Checking if there's not a previous node with the same tokens, if not we consider as a possible rule
         if(!isAncestor(n, get<0>(likely), auxTokens, get<1>(likely)))
             rules->push_back(counter+1);
         
@@ -104,8 +109,10 @@ void searchByTheRight(list<int>* rules, Table* n, int numberOfJumps, int* auxTok
     // This loop searches the rules by the right
     for(int counter = 0, i = n->getIndexOfVoidSpace()+1; counter <= numberOfJumps && i < n->getSize(); i++, counter++){
 
-        tuple<int, int> likely = likelyHashValue(n->getTokens(), auxTokens ,n->getSize(), n->getIndexOfVoidSpace(),-(counter+1));
+        // It's necessary to get the possible hash value and void index
+        tuple<int, int> likely = likelyHashValue(n->getTokens(), auxTokens, n->getSize(), n->getIndexOfVoidSpace(), -(counter+1));
 
+        // Checking if there's not a previous node with the same tokens, if not we consider as a possible rule
         if(!isAncestor(n, get<0>(likely), auxTokens, get<1>(likely)))
             rules->push_back(-(counter+1));
         
@@ -115,18 +122,26 @@ void searchByTheRight(list<int>* rules, Table* n, int numberOfJumps, int* auxTok
 
 bool isAncestor(Table* n, int hashValue, int* tokens, int newIndexOfVoidSpace){
 
+    int size;
+    int* auxTokens;
+
+    // We go from the node until the root of the tree
     while(n != nullptr){
         
+        // With equal hash values, a collision is possible
         if(n->getHashValue() == hashValue){
 
+            // Same index of the void means that this is likely to be a collision
+            // but it is not deterministic
             if(newIndexOfVoidSpace == n->getIndexOfVoidSpace()){
 
-                int size = n->getSize();
-                int* auxTokens = n->getTokens();
+                size = n->getSize();
+                auxTokens = n->getTokens();
 
-                if(tokensEquality(tokens,auxTokens,size))
+                // To truly check if is a collision we compare the tokens' array
+                if(tokensEquality(tokens, auxTokens, size))
                     return true;
-
+                
             }
             
         }
@@ -143,6 +158,7 @@ int hashValue(int* tokens, int size){
 
     int sum = 0;
 
+    // Adding 1 to index we multiply it to tokens value
     for(int i = 0; i < size; i++)
         sum += tokens[i]*(i+1);
 
@@ -151,8 +167,10 @@ int hashValue(int* tokens, int size){
 
 tuple<int, int> likelyHashValue(int* tokens, int* likelyTokens, int size, int voidSpace, int rule){
 
+    // copying the array so that we do not interfere with its integrity
     copyTokens(tokens, likelyTokens, size);
 
+    // apply the possible rule
     swap(likelyTokens, voidSpace, voidSpace - rule);
 
     return make_tuple(hashValue(likelyTokens, size), voidSpace - rule);
@@ -206,12 +224,14 @@ bool checkSolution(int* tokens, int n){
 
 }
 
-stack<int>* getSolution(Table* n){
+stack<int>* getSolution(Table* n, Table* root){
 
     stack<int>* s = new stack<int>;
 
-    while(n != nullptr){
+    // going from the solution node to the root
+    while(n != root){
 
+        // the rule applied to the node is pushed to a stack
         s->push(n->getRule());
         n = n->getFather();
 
@@ -221,27 +241,39 @@ stack<int>* getSolution(Table* n){
 
 }
 
-void printStack(stack<int>* s){
+int printStack(stack<int>* s){
 
+    int cost = 0;
+    int n;
+
+    // going through the stack of solution rules
     while(!s->empty()){
 
-        int n = s->top();
+        // print the top of the stack
+        n = s->top();
         cout << ruleChar(n) << " ";
+        
+        // add to the cost of the solution 
+        cost += abs(n);
+        
         s->pop();
         
     }
 
     cout << endl;
 
+    return cost;
 }
 
 // ! Rules are based on void movement
 string ruleChar(int rule){
 
+    // Hence positive values moves the tokens to the right and negative to the left
+    // we indicate in this string how many you need to move the token
     if(rule > 0)
-        return 'E' + to_string(abs((rule - 1)));
+        return 'D' + to_string(rule - 1);
     else 
-        return 'D' + to_string(abs(-rule - 1));
+        return 'E' + to_string(abs(rule) - 1);
 
 }
 
@@ -344,13 +376,17 @@ int getBiggestGroupHeuristic(int* tokens, int size){
     return size/2 - biggestGroupSize;
 
 }
-// ! Maybe the parameter will be the tokens
+
 void setInitialState(Table* root){
 
+    // auxliar variables
     int size =  root->getSize();
     int* auxTokens = root->getTokens();
+
+    // initial void position is in the middle of the table
     auxTokens[root->getIndexOfVoidSpace()] = 3;
-    // Inserting the tokens in the list
+
+    // Inserting the tokens in the table
     for (int i = 0; i < size / 2; i++){
 
         auxTokens[i] = 1;

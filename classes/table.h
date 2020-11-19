@@ -17,6 +17,7 @@ class Table{
         int hashValue;
         int heuristicValue;
         int functionValue;
+        bool visited;
 
     public:
         // Constructor 
@@ -34,6 +35,7 @@ class Table{
         int getHeuristic();
         int getFunctionValue();
         list<int>* getApplicableRules();
+        bool getVisited();
         // Setters
         void setHashValue(int value);       
         void setFather(Table* father);
@@ -44,6 +46,7 @@ class Table{
         void setCost(int rule);
         void setHeuristic(int h);
         void setFunctionValue(int value);
+        void setVisited(bool v);
 
 };
 

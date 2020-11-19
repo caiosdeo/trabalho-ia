@@ -3,6 +3,6 @@
 #include <list>
 #include <queue>
 
-Table* greedySearch(Table* root);
-Table* AStarSearch(Table* root);
+Table* greedySearch(Table* root, int* expandedNodes, int* visitedNodes, int* numberOfLeafs);
+Table* AStarSearch(Table* root, int* expandedNodes, int* visitedNodes, int* numberOfLeafs);
 Table* IDAStarSearch(Table* root);

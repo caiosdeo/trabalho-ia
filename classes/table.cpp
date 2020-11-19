@@ -10,6 +10,7 @@ Table::Table(int size){
     // Initializing the class
     this->size = size; 
     this->tokens = (int*)malloc(size*sizeof(int));
+    this->visited = false;
     
 }
 
@@ -57,6 +58,10 @@ void Table::setFunctionValue(int value){
     this->functionValue = value;
 }
 
+void Table::setVisited(bool v){
+    this->visited = v;
+}
+
 // Getters
 int* Table::getTokens(){
     return this->tokens;
@@ -96,4 +101,8 @@ int Table::getHeuristic(){
 
 int Table::getFunctionValue(){
     return this->functionValue;
+}
+
+bool Table::getVisited(){
+    return this->visited;
 }
