@@ -3,25 +3,26 @@
 #include <stack>
 #include <string>
 #include <tuple>
+#include <vector>
 
 /**
  * Dictionary to get a matching char for a token's value
  * 0 to '-'; 1 to 'W' (White); and 2 to 'B' (Black)
  *
  * @author caiosdeo
- * @param unsigned token 
+ * @param int token 
  * @return char that corresponds to its int
  */
-char tokenChar(unsigned int token);
+char tokenChar(int token);
 
 /**
  * Print the Table's tokens
  *
  * @author caiosdeo
- * @param unsigned int* tokens array
- * @param unsigned int size of tokens' array
+ * @param int* tokens array
+ * @param int size of tokens' array
  */
-void printTable(unsigned int* tokens, unsigned int size);
+void printTable(int* tokens, int size);
 
 /**
  * Function that swaps applicable rules by the right
@@ -31,7 +32,7 @@ void printTable(unsigned int* tokens, unsigned int size);
  * @param n father pointer of father's Table
  * @param numberOfJumps the maximum size of search
  */
-void swap(unsigned int* tokens, int i, int j);
+void swap(int* tokens, int i, int j);
 
 /**
  * Function to generate a new table gives its father and the rule applied
@@ -62,7 +63,7 @@ list<int>* findApplicableRules(Table* n);
  * @param newIndexOfVoidSpace new index calculated for the potential Table
  * @return bool if the node n has an ancestor or not
  */
-bool isAncestor(Table* n, unsigned int hashValue, unsigned int* tokens, unsigned int newIndexOfVoidSpace);
+bool isAncestor(Table* n, int hashValue, int* tokens, int newIndexOfVoidSpace);
 
 /**
  * Function that calculates a hash value to the table
@@ -72,7 +73,7 @@ bool isAncestor(Table* n, unsigned int hashValue, unsigned int* tokens, unsigned
  * @param size size of the table
  * @return int the calculated hash
  */
-unsigned int hashValue(unsigned int* tokens, unsigned int size);
+int hashValue(int* tokens, int size);
 
 /**
  * Function that search applicable rules by the left
@@ -81,8 +82,9 @@ unsigned int hashValue(unsigned int* tokens, unsigned int size);
  * @param rules list that will be filled
  * @param n father pointer of father's Table
  * @param numberOfJumps the maximum size of search
+ * @param auxTokens probably state of tokens
  */
-void searchByTheLeft(list<int>* rules, Table* n, unsigned int numberOfJumps);
+void searchByTheLeft(list<int>* rules, Table* n, int numberOfJumps, int* auxTokens);
 
 /**
  * Function that search applicable rules by the right
@@ -91,30 +93,32 @@ void searchByTheLeft(list<int>* rules, Table* n, unsigned int numberOfJumps);
  * @param rules list that will be filled
  * @param n father pointer of father's Table
  * @param numberOfJumps the maximum size of search
+ * @param auxTokens probably state of tokens
  */
-void searchByTheRight(list<int>* rules, Table* n, unsigned int numberOfJumps);
+void searchByTheRight(list<int>* rules, Table* n, int numberOfJumps, int* auxTokens);
 
 /**
  * Generates the hash value to compares to ancestors
  *
  * @author caiosdeo
- * @param unsigned int* tokens array
- * @param unsigned int size of tokens' array
+ * @param int* tokens array
+ * @param int* likelyTokens probably state of tokens
+ * @param int size of tokens' array
  * @param int voidSpace index of void space
  * @param int rule 
- * @return tuple<unsigned, unsigned*, unsigned> 0 - likely hash value; 1 - likely tokens; 2 - likely voidspace
+ * @return tuple<int, int> 0 - likely hash value; 1 - likely voidspace
  */
-tuple<unsigned, unsigned*, unsigned> likelyHashValue(unsigned int* tokens, unsigned int size, int voidSpace, int rule);
+tuple<int, int> likelyHashValue(int* tokens, int* likelyTokens, int size, int voidSpace, int rule);
 
 /**
  * Copy an tokens' array
  *
  * @author caiosdeo
- * @param unsigned int* tokens array
- * @param unsigned int size of tokens' array
- * @return unsigned int* copied array
+ * @param int* tokens array
+ * @param int* auxTokens pointer to be copied
+ * @param int size of tokens' array
  */
-unsigned int* copyTokens(unsigned int* tokens, unsigned int size);
+void copyTokens(int* tokens, int* copiedTokens, int size);
 
 /**
  * Function that checks if the tokens represent a solution
@@ -123,7 +127,7 @@ unsigned int* copyTokens(unsigned int* tokens, unsigned int size);
  * @param tokens Table's tokens
  * @param n Table's size
  */
-bool checkSolution(unsigned int* tokens, unsigned int n);
+bool checkSolution(int* tokens, int n);
 /**
  * Function that finds the solution
  *
@@ -136,7 +140,7 @@ stack<int>* getSolution(Table* n);
  * Print the stack
  *
  * @author caiosdeo
- * @param unsigned stack<int>* stack with int
+ * @param int stack<int>* stack with int
  */
 void printStack(stack<int>* s);
 
@@ -144,7 +148,7 @@ void printStack(stack<int>* s);
  * Dictionary to get a matching char for a rule's value
  *
  * @author caiosdeo
- * @param unsigned token 
+ * @param int token 
  * @return char that corresponds to its int
  */
 string ruleChar(int rule);
@@ -158,4 +162,27 @@ string ruleChar(int rule);
  * @param n size of the Tables
  * @return bool if the tables are equal or not
  */
-bool tokensEquality(unsigned int* tokens, unsigned int* auxTokens, unsigned int n);
+bool tokensEquality(int* tokens, int* auxTokens, int n);
+
+/**
+ * Function to verifies if a node n has an ancestor
+ *
+ * @author eliascassis
+ * @param vec list of open Tables
+ * @return Table* to the Table with minor cost
+ */
+Table* getsTableWithMinorCost(vector<Table*> *vec);
+
+// TODO: documents here
+// ? solution black group minus biggest black group between whites 
+// ? number of whites between black
+int getBiggestGroupHeuristic(int* tokens, int size);
+
+// TODO: documents here
+Table* getsTableWithMinorHeuristic(vector<Table*> *vec);
+
+// TODO: documents here
+Table* getsTableWithMinorFunctionValue(vector<Table*> *vec);
+
+// TODO: documents here
+void setInitialState(Table* root);

@@ -4,6 +4,10 @@
 #include "classes/table.h"
 #include "auxiliar_functions/aux.h"
 #include "uninformed_methods/uninformed.h"
+#include "informed_methods/informed.h"
+#include <list>
+#include <iterator>
+#include <stack>
 
 using namespace std;
 
@@ -16,7 +20,18 @@ void select(int option, int size){
     // Pointer for solution Table
     Table* final;
 
-    // Printing Table tokens
+    // setting root info
+    root->setFather(nullptr);
+    setInitialState(root);
+    root->setIndexOfVoidSpace(root->getSize()/2);
+    root->setRule(0);
+    root->setApplicableRules(findApplicableRules(root));
+    root->setHashValue(hashValue(root->getTokens(),root->getSize()));
+    root->setCost(0);
+    root->setHeuristic(getBiggestGroupHeuristic(root->getTokens(),root->getSize()));
+    root->setFunctionValue(root->getCost()+root->getHeuristic());
+    
+    // Printing Table tokens    
     cout << "RAIZ: ";
     printTable(root->getTokens(), root->getSize());
     cout << endl;
@@ -24,7 +39,7 @@ void select(int option, int size){
     //Start point to measure runtime
     auto start = chrono::high_resolution_clock::now();
 
-    // Choose method
+    // Choose Search Algorithm
     switch (option){
 
         //BACKTRACKING
@@ -58,6 +73,39 @@ void select(int option, int size){
             break;
         }
 
+        // Ordered Search
+        case 4:{
+
+            cout << "BUSCA ORDENADA" << endl;
+
+            final = orderedSearch(root);          
+            break;
+        }
+
+        case 5:{
+
+            cout << "BUSCA GULOSA" << endl;
+
+            final = greedySearch(root);          
+            break;
+        }
+
+        case 6:{
+
+            cout << "A*" << endl;
+
+            final = AStarSearch(root);          
+            break;
+        }
+
+        case 7:{
+
+            cout << "IDA*" << endl;
+
+            final = IDAStarSearch(root);          
+            break;
+        }
+
         default:
             break;
                 
@@ -76,7 +124,7 @@ void select(int option, int size){
     cout << "FINAL: ";
     printTable(final->getTokens(), final->getSize());
     cout << endl;
-
+    
     cout << "ESTATÍSTICAS: " << endl;
     cout << "Caminho: ";
     printStack(solution);
@@ -117,7 +165,7 @@ int main(int argc, char const *argv[]) {
     unsigned clear = system("clear");
 
     select(option, size);
-
+    
     return 0;
     
 }

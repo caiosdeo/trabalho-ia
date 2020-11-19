@@ -7,29 +7,35 @@ using namespace std;
 
 Table* backtracking(Table* root){
 
-    // Initializing N with root's pointer
-    Table* N = root;
+    Table* N = root; // Initializing N with root's pointer
     bool sucess = false, failure = false; 
+    list<int>* rules;
+    int rule;
 
     // While not sucess or failure
     while(!(sucess || failure)){
 
         // List of possibles operators to N
-        list<int>* rules = N->getApplicableRules();
+        rules = N->getApplicableRules();
 
-        if(!rules->empty()) {
+        if(!rules->empty()){
 
             // Picking first operator
-            int rule = rules->front();
+            rule = rules->front();
             rules->pop_front();
-            N = givesLight(N, rule);
+            N = givesLight(N,rule);
 
-            if(checkSolution(N->getTokens(), N->getSize()))
+            if(checkSolution(N->getTokens(), N->getSize())){
+
                 sucess = true;
+                break;
 
-        }else{
+            }
 
-			if (N == root)
+        }
+        else{
+
+			if(N == root)
 				failure = true;
 			else 
 				N = N->getFather();
@@ -48,9 +54,9 @@ Table* bfs(Table* root){
     queue<Table*> open;
     Table* N, *U;
     open.push(root);
-    // Defining closed list
-    list<Table*> closed;
-    bool sucess = false, failure = false; 
+    bool sucess = false, failure = false;
+    list<int>* rules; 
+    int rule;
 
     // While not sucess or failure
     while(!(sucess || failure)){
@@ -63,26 +69,30 @@ Table* bfs(Table* root){
             N = open.front(); // Gets the first element in the queue
             open.pop(); // Removes the first element of the open list
 
-            if(checkSolution(N->getTokens(),N->getSize()))
+            if(checkSolution(N->getTokens(), N->getSize())){
+
                 sucess = true;
+                break;
+
+            }
 
             else{
 
                 // List of possibles operators to N
-                list<int>* rules = N->getApplicableRules();
+                rules = N->getApplicableRules();
 
                 while(!rules->empty()){
 
                     // Picking first operator
-                    int rule = rules->front();
+                    rule = rules->front();
                     rules->pop_front();
                     // Generating new node and inserting it in the open list
                     U = givesLight(N, rule);
                     open.push(U);
 
                 }
-                // Inserting N in the closed list
-                closed.push_front(N);
+                // Free Table's tokens
+                //N->freeTable();
 
             }
 
@@ -100,9 +110,9 @@ Table* dfs(Table* root){
     stack<Table*> open;
     Table* N, *U;
     open.push(root);
-    // Defining closed list
-    list<Table*> closed;
     bool sucess = false, failure = false; 
+    list<int>* rules;
+    int rule;
 
     // While not sucess or failure
     while(!(sucess || failure)){
@@ -115,26 +125,85 @@ Table* dfs(Table* root){
             N = open.top(); // Gets the element at the top of the stack
             open.pop(); // Removes the top element of the open list
 
-            if(checkSolution(N->getTokens(),N->getSize()))
+            if(checkSolution(N->getTokens(), N->getSize())){
+
                 sucess = true;
+                break;
+
+            }
 
             else{
 
                 // List of possibles operators to N
-                list<int>* rules = N->getApplicableRules();
+                rules = N->getApplicableRules();
 
                 while(!rules->empty()){
 
                     // Picking first operator
-                    int rule = rules->back();
+                    rule = rules->back();
                     rules->pop_back();
                     // Generating new node and inserting it in the open list
                     U = givesLight(N, rule);
                     open.push(U);
 
                 }
-                // Inserting N in the closed list
-                closed.push_front(N);
+                // Free Table's tokens
+                //N->freeTable();
+
+            }
+
+        }
+
+    }
+
+    return N;
+
+}
+
+Table* orderedSearch(Table* root){
+
+    // Defining open list and pushing root node to it
+    vector<Table*> open;
+    Table* N, *U;
+    open.push_back(root);
+    bool sucess = false, failure = false; 
+    list<int>* rules;
+    int rule;
+
+    // While not sucess or failure
+    while(!(sucess || failure)){
+
+        if(open.empty())
+            failure = true;
+
+        else{
+
+            N = getsTableWithMinorCost(&open);
+
+            if(checkSolution(N->getTokens(), N->getSize())){
+
+                sucess = true;
+                break;
+
+            }
+
+            else{
+
+                // List of possibles operators to N
+                rules = N->getApplicableRules();
+
+                while(!rules->empty()){
+
+                    // Picking first operator
+                    rule = rules->back();
+                    rules->pop_back();
+                    // Generating new node and inserting it in the open list
+                    U = givesLight(N, rule);
+                    open.push_back(U);
+
+                }
+                // Free Table's tokens
+                //N->freeTable();
 
             }
 
