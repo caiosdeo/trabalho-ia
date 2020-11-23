@@ -103,7 +103,7 @@ void select(int option, int size){
         case 7:{
 
             cout << "IDA*" << endl;
-            final = IDAStarSearch(root);          
+            final = IDAStarSearch(root, &numberOfExpandedNodes, &numberOfVisitedNodes, &numberOfLeafs);          
             break;
         }
 

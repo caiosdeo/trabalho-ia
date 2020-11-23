@@ -125,7 +125,7 @@ Table* AStarSearch(Table* root, int* expandedNodes, int* visitedNodes, int* numb
 
 }
 
-Table* IDAStarSearch(Table* root){
+Table* IDAStarSearch(Table* root, int* expandedNodes, int* visitedNodes, int* numberOfLeafs){
 
     Table* N = root;
     Table* aux;
@@ -153,10 +153,14 @@ Table* IDAStarSearch(Table* root){
                     aux = N;
                     N = N->getFather();
                     discarded.push_back(aux);
+                    (*numberOfLeafs)++;
                 }
 
                 // List of possibles operators to N
                 list<int>* rules = N->getApplicableRules();
+
+                (*visitedNodes)++;
+                N->setVisited(true);
 
                 if(!rules->empty()) {
 
@@ -165,6 +169,8 @@ Table* IDAStarSearch(Table* root){
                     rules->pop_front();
                     N = givesLight(N, rule);
                     rules = nullptr;
+
+                    (*expandedNodes)++;
 
                 }
                 else{
@@ -182,9 +188,9 @@ Table* IDAStarSearch(Table* root){
                         
                         level = minorDiscardedLevel;
                     }
-                    else
+                    else{
                         N = N->getFather();
-
+                    }
                 }
 
             }
