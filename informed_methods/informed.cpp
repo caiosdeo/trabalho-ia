@@ -129,11 +129,10 @@ Table* IDAStarSearch(Table* root){
 
     Table* N = root;
     Table* aux;
+    list<Table*> discarded;
     bool success = false, failure = false, isFirst = true; 
-    int level = root->getHeuristic(), oldLevel = -1;
-    int auxLevel = level;
-    int auxFunctionValue;
-    cout << "lvl inicial: " << level << endl;
+    int level = root->getHeuristic(), oldLevel = -1, minorDiscardedLevel;
+
     // While not success or failure
     while(!(success || failure)){
 
@@ -143,27 +142,17 @@ Table* IDAStarSearch(Table* root){
         else{
 
             if(checkSolution(N->getTokens(), N->getSize()) && N->getFunctionValue() <= level){
-                cout << "E SOLUCAO!" << endl;
                 success = true;
                 break;
 
             }
             else{
 
-                auxFunctionValue = N->getFunctionValue();
-                if(auxFunctionValue > level){
+                if(N->getFunctionValue() > level){
 
-                    if(isFirst){
-                        cout << "É PRIMEIRA!" << endl;
-                        isFirst = false;
-                        auxLevel =  auxFunctionValue;
-                    }else
-                        auxLevel = auxFunctionValue < auxLevel ? auxFunctionValue : auxLevel;
-                    cout << "auxFValue: " << auxFunctionValue << " auxLvl: " << auxLevel << endl;
                     aux = N;
                     N = N->getFather();
-                    delete aux;
-
+                    discarded.push_back(aux);
                 }
 
                 // List of possibles operators to N
@@ -175,8 +164,6 @@ Table* IDAStarSearch(Table* root){
                     int rule = rules->front();
                     rules->pop_front();
                     N = givesLight(N, rule);
-                    printTable(N->getTokens(), N->getSize());
-                    cout << "rules size: " << rules->size() << endl;
                     rules = nullptr;
 
                 }
@@ -185,9 +172,15 @@ Table* IDAStarSearch(Table* root){
                     if(N == root){
 
                         oldLevel = level;
-                        level = auxLevel; // TODO: gets minor value here
-                        isFirst = true;
 
+                        list<Table*>::iterator it = discarded.begin();
+                        minorDiscardedLevel = (*it)->getFunctionValue();
+                        ++it;
+                        for(; it != discarded.end(); ++it)
+                            if((*it)->getFunctionValue() < minorDiscardedLevel)
+                                minorDiscardedLevel = (*it)->getFunctionValue();
+                        
+                        level = minorDiscardedLevel;
                     }
                     else
                         N = N->getFather();
