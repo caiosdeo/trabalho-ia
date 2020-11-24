@@ -395,7 +395,7 @@ int getBiggestGroupHeuristic(int* tokens, int size){
 
     }
 
-    return size/2 - biggestGroupSize;
+    return (size/2 - biggestGroupSize);
 
 }
 

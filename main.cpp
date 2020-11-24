@@ -36,6 +36,7 @@ void select(int option, int size){
     int numberOfExpandedNodes = 0;
     int numberOfVisitedNodes = 0;
     int numberOfLeafs = 0;
+    int totalOfNodes;
 
     // Printing Table tokens    
     cout << "RAIZ: ";
@@ -127,6 +128,7 @@ void select(int option, int size){
 
     // Statistics Variables
     int solutionSize = solution->size();
+    totalOfNodes = numberOfExpandedNodes + 1;
     
     cout << "ESTATÍSTICAS: " << endl;
     cout << "Caminho: ";
@@ -135,7 +137,7 @@ void select(int option, int size){
     cout << "Custo da solução: " << solutionCost << endl; 
     cout << "Total de nós expandidos: " << numberOfExpandedNodes << endl;
     cout << "Total de nós visitados: " << numberOfVisitedNodes << endl;
-    cout << "Valor médio de ramificação: " <<  setprecision(3) << float(numberOfExpandedNodes)/(numberOfExpandedNodes + 1 - numberOfLeafs) << endl;
+    cout << "Valor médio de ramificação: " <<  setprecision(3) << float(totalOfNodes)/(totalOfNodes - numberOfLeafs) << endl;
     cout << "Tempo de execução: " << duration.count() << " ms" << endl;
 
     // Wait screen
