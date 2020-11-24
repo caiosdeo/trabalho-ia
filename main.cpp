@@ -32,7 +32,6 @@ void select(int option, int size){
     root->setCost(0);
     root->setHeuristic(getBiggestGroupHeuristic(root->getTokens(),root->getSize()));
     root->setFunctionValue(root->getCost()+root->getHeuristic());
-    cout<< sizeof(root->getTokens())<< endl;
     // Statistics Variables
     int numberOfExpandedNodes = 0;
     int numberOfVisitedNodes = 0;
