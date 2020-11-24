@@ -187,6 +187,8 @@ Table* IDAStarSearch(Table* root, int* expandedNodes, int* visitedNodes, int* nu
                                 minorDiscardedLevel = (*it)->getFunctionValue();
                         
                         level = minorDiscardedLevel;
+
+                        discarded.clear();
                     }
                     else{
                         N = N->getFather();
