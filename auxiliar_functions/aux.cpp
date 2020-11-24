@@ -305,8 +305,7 @@ Table* getsTableWithMinorCost(vector<Table*> *vec){
 
     }
 
-    cout << "Cheguei aqui - minorCost: " << minorCost << endl;
-    
+    cout << minorCost << endl;
     Table* aux = vec->at(minor);
     vec->erase(vec->begin() + minor);
     return aux;

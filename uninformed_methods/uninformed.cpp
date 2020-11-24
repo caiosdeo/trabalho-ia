@@ -62,9 +62,9 @@ Table* backtracking(Table* root, int* expandedNodes, int* visitedNodes, int* num
 Table* bfs(Table* root, int* expandedNodes, int* visitedNodes, int* numberOfLeafs){
 
     // Defining open list and pushing root node to it
-    queue<Table*> open;
+    list<Table*> open;
     Table* N, *U;
-    open.push(root);
+    open.push_front(root);
     bool success = false, failure = false;
     list<int>* rules; 
     int rule;
@@ -77,8 +77,8 @@ Table* bfs(Table* root, int* expandedNodes, int* visitedNodes, int* numberOfLeaf
 
         else{
 
-            N = open.front(); // Gets the first element in the queue
-            open.pop(); // Removes the first element of the open list
+            N = open.back(); // Gets the first element in the queue
+            open.pop_back(); // Removes the first element of the open list
             (*visitedNodes)++;
             N->setVisited(true);
 
@@ -105,7 +105,7 @@ Table* bfs(Table* root, int* expandedNodes, int* visitedNodes, int* numberOfLeaf
                     rules->pop_front();
                     // Generating new node and inserting it in the open list
                     U = givesLight(N, rule);
-                    open.push(U);
+                    open.push_front(U);
                     (*expandedNodes)++;
                     
                 }
