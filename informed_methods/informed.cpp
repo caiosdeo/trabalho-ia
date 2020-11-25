@@ -159,8 +159,12 @@ Table* IDAStarSearch(Table* root, int* expandedNodes, int* visitedNodes, int* nu
                 // List of possibles operators to N
                 list<int>* rules = N->getApplicableRules();
 
-                (*visitedNodes)++;
-                N->setVisited(true);
+                if(!N->getVisited()){
+
+                    (*visitedNodes)++;
+                    N->setVisited(true);
+                    
+                }
 
                 if(!rules->empty()) {
 
