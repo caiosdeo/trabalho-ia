@@ -145,7 +145,7 @@ stack<int>* getSolution(Table* n, Table* root);
  * @param int stack<int>* stack with int
  * @return cost custo da solução
  */
-int printStack(stack<int>* s);
+tuple<string,int> printStack(stack<int>* s);
 
 /**
  * Dictionary to get a matching char for a rule's value

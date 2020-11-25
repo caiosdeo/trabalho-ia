@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <chrono>
+#include <string>
 #include "classes/table.h"
 #include "auxiliar_functions/aux.h"
 #include "uninformed_methods/uninformed.h"
@@ -12,7 +13,7 @@
 
 using namespace std;
 
-void select(int option, int size){
+void select(int option, int size, ofstream& output_file){
 
     // Printing table size
     cout << "TAMANHO: " << size << endl;
@@ -128,16 +129,20 @@ void select(int option, int size){
 
     // Statistics Variables
     int solutionSize = solution->size();
-    
+    int solutionCost;
+    string path;
+
     cout << "ESTATÍSTICAS: " << endl;
     cout << "Caminho: ";
-    int solutionCost = printStack(solution);
+    tie(path, solutionCost) = printStack(solution);
     cout << "Profundidade da solução: " << solutionSize << endl;
     cout << "Custo da solução: " << solutionCost << endl; 
     cout << "Total de nós expandidos: " << numberOfExpandedNodes << endl;
     cout << "Total de nós visitados: " << numberOfVisitedNodes << endl;
     cout << "Valor médio de ramificação: " <<  setprecision(3) << float(numberOfExpandedNodes)/(numberOfExpandedNodes + 1 - numberOfLeafs) << endl;
     cout << "Tempo de execução: " << duration.count() << " ms" << endl;
+
+    output_file << size << "," << path << "," << solutionSize << "," << solutionCost << "," << numberOfExpandedNodes << "," << numberOfVisitedNodes << "," <<  setprecision(3) << float(numberOfExpandedNodes)/(numberOfExpandedNodes + 1 - numberOfLeafs) << "," << duration.count() << endl;
 
     // Wait screen
     cout << endl << "Pressione ENTER....";
@@ -166,10 +171,21 @@ int main(int argc, char const *argv[]) {
     int size = atoi(argv[1]);
     int option = atoi(argv[2]);
 
+    string output = "output/output" + to_string(option) + ".csv";
+
+    ofstream output_file;
+
+    output_file.open(output, ios::out | ios::app);
+
     unsigned clear = system("clear");
 
-    select(option, size);
-    
+    cout << output;
+
+    if(output_file.is_open())
+        select(option, size, output_file);
+
+    output_file.close();
+
     return 0;
     
 }

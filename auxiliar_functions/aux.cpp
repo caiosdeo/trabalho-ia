@@ -241,17 +241,17 @@ stack<int>* getSolution(Table* n, Table* root){
 
 }
 
-int printStack(stack<int>* s){
+tuple<string,int> printStack(stack<int>* s){
 
     int cost = 0;
     int n;
-
+    string path = "";
     // going through the stack of solution rules
     while(!s->empty()){
 
         // print the top of the stack
         n = s->top();
-        cout << ruleChar(n) << " ";
+        path += ruleChar(n) + " ";
         
         // add to the cost of the solution 
         cost += abs(n);
@@ -262,7 +262,7 @@ int printStack(stack<int>* s){
 
     cout << endl;
 
-    return cost;
+    return make_tuple(path, cost);
 }
 
 // ! Rules are based on void movement
