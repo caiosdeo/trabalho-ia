@@ -187,6 +187,16 @@ Table* getsTableWithMinorCost(vector<Table*> *vec);
 int getBiggestGroupHeuristic(int* tokens, int size);
 
 /**
+ * Function that calculates the heuristics for a table's token
+ *
+ * @author eliascassis
+ * @param tokens Table's tokens
+ * @param size Table's size
+ * @return heuristic value
+ */
+int getNumberOfBlacksOutOfPlaceHeuristic(int* tokens, int size);
+
+/**
  * Function that gets the table with minor heuristic value
  *
  * @author eliascassis

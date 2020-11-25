@@ -398,6 +398,45 @@ int getBiggestGroupHeuristic(int* tokens, int size){
 
 }
 
+int getNumberOfBlacksOutOfPlaceHeuristic(int* tokens, int size){
+
+    int biggestGroupSize = 0;
+    int auxGroupSize = 0;
+    int auxTokens[size-1];
+
+    for(int i = 0, j = 0; i < size; i++)
+        if(tokens[i] != 3){
+            auxTokens[j] = tokens[i];
+            j++;
+        }
+
+    for(int i = 0; i < size - 1; i++){
+
+
+        bool whiteFollowedByBlack = auxTokens[i] == 1 && auxTokens[i+1] == 2;
+        
+        if(whiteFollowedByBlack){
+
+            i++;
+
+            while(auxTokens[i] == 2){
+                    auxGroupSize++;
+                i++;
+            }
+
+            if(auxTokens[i] == 1){
+                biggestGroupSize += auxGroupSize;
+                auxGroupSize = 0;   
+            }
+            
+        }
+
+    }
+
+    return (size/2 - biggestGroupSize);
+
+}
+
 void setInitialState(Table* root){
 
     // auxliar variables
