@@ -54,7 +54,7 @@ Table* givesLight(Table* father, int rule){
     t->setIndexOfVoidSpace(fathersVoidSpace-rule);
     t->setRule(rule);
     t->setApplicableRules(findApplicableRules(t));
-    t->setCost(father->getCost()+rule);
+    t->setCost(father->getCost()+abs(rule));
     t->setFunctionValue(t->getCost()+t->getHeuristic());
     
     return t;
@@ -290,14 +290,22 @@ bool tokensEquality(int* tokens, int* auxTokens, int n){
 Table* getsTableWithMinorCost(vector<Table*> *vec){
 
     int minor = 0;
+    int i = 1;
+    int minorCost = vec->at(minor)->getCost();
+    int auxCost;
 
-    for(int i = 1; i < vec->size(); i++){
+    for(vector<Table*>::iterator it = vec->begin() + 1; it != vec->end(); ++it, i++){
 
-        if(vec->at(minor)->getCost() > vec->at(i)->getCost())
+        auxCost = (*it)->getCost();
+
+        if(minorCost >= auxCost){
             minor = i;
+            minorCost = auxCost;
+        }
 
     }
-    
+
+    cout << minorCost << endl;
     Table* aux = vec->at(minor);
     vec->erase(vec->begin() + minor);
     return aux;
@@ -307,11 +315,18 @@ Table* getsTableWithMinorCost(vector<Table*> *vec){
 Table* getsTableWithMinorHeuristic(vector<Table*> *vec){
 
     int minor = 0;
+    int i = 1;
+    int minorHeuristic = vec->at(minor)->getHeuristic();
+    int auxHeuristic;
 
-    for(int i = 1; i < vec->size(); i++){
+    for(vector<Table*>::iterator it = vec->begin() + 1; it != vec->end(); ++it, i++){
 
-        if(vec->at(minor)->getHeuristic() > vec->at(i)->getHeuristic())
+        auxHeuristic = (*it)->getHeuristic();
+
+        if(minorHeuristic >= auxHeuristic){
             minor = i;
+            minorHeuristic = auxHeuristic;
+        }
 
     }
     
@@ -324,11 +339,18 @@ Table* getsTableWithMinorHeuristic(vector<Table*> *vec){
 Table* getsTableWithMinorFunctionValue(vector<Table*> *vec){
 
     int minor = 0;
+    int i = 1;
+    int minorFuctionValue = vec->at(minor)->getFunctionValue();
+    int auxFuctionValue;
 
-    for(int i = 1; i < vec->size(); i++){
+    for(vector<Table*>::iterator it = vec->begin() + 1; it != vec->end(); ++it, i++){
 
-        if(vec->at(minor)->getFunctionValue() > vec->at(i)->getFunctionValue())
+        auxFuctionValue = (*it)->getFunctionValue();
+
+        if(minorFuctionValue >= auxFuctionValue){
             minor = i;
+            minorFuctionValue = auxFuctionValue;
+        }
 
     }
     
@@ -373,7 +395,7 @@ int getBiggestGroupHeuristic(int* tokens, int size){
 
     }
 
-    return size/2 - biggestGroupSize;
+    return (size/2 - biggestGroupSize);
 
 }
 

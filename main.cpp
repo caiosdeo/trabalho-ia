@@ -33,11 +33,11 @@ void select(int option, int size, ofstream& output_file){
     root->setCost(0);
     root->setHeuristic(getBiggestGroupHeuristic(root->getTokens(),root->getSize()));
     root->setFunctionValue(root->getCost()+root->getHeuristic());
-    
     // Statistics Variables
     int numberOfExpandedNodes = 0;
     int numberOfVisitedNodes = 0;
     int numberOfLeafs = 0;
+    int totalOfNodes;
 
     // Printing Table tokens    
     cout << "RAIZ: ";
@@ -132,6 +132,8 @@ void select(int option, int size, ofstream& output_file){
     int solutionCost;
     string path;
 
+    totalOfNodes = numberOfExpandedNodes + 1;
+    
     cout << "ESTATÍSTICAS: " << endl;
     cout << "Caminho: ";
     tie(path, solutionCost) = printStack(solution);
@@ -139,10 +141,10 @@ void select(int option, int size, ofstream& output_file){
     cout << "Custo da solução: " << solutionCost << endl; 
     cout << "Total de nós expandidos: " << numberOfExpandedNodes << endl;
     cout << "Total de nós visitados: " << numberOfVisitedNodes << endl;
-    cout << "Valor médio de ramificação: " <<  setprecision(3) << float(numberOfExpandedNodes)/(numberOfExpandedNodes + 1 - numberOfLeafs) << endl;
+    cout << "Valor médio de ramificação: " <<  setprecision(3) << float(totalOfNodes)/(totalOfNodes - numberOfLeafs) << endl;
     cout << "Tempo de execução: " << duration.count() << " ms" << endl;
 
-    output_file << size << "," << path << "," << solutionSize << "," << solutionCost << "," << numberOfExpandedNodes << "," << numberOfVisitedNodes << "," <<  setprecision(3) << float(numberOfExpandedNodes)/(numberOfExpandedNodes + 1 - numberOfLeafs) << "," << duration.count() << endl;
+    output_file << size << "," << path << "," << solutionSize << "," << solutionCost << "," << numberOfExpandedNodes << "," << numberOfVisitedNodes << "," <<  setprecision(3) << float(totalOfNodes)/(totalOfNodes - numberOfLeafs) << "," << duration.count() << endl;
 
     // Wait screen
     cout << endl << "Pressione ENTER....";
