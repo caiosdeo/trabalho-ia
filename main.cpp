@@ -132,11 +132,12 @@ void select(int option, int size, ofstream& output_file){
     int solutionCost;
     string path;
 
+    tie(path, solutionCost) = printStack(solution);
+
     totalOfNodes = numberOfExpandedNodes + 1;
     
     cout << "ESTATÍSTICAS: " << endl;
-    cout << "Caminho: ";
-    tie(path, solutionCost) = printStack(solution);
+    cout << "Caminho: " << path << endl;;
     cout << "Profundidade da solução: " << solutionSize << endl;
     cout << "Custo da solução: " << solutionCost << endl; 
     cout << "Total de nós expandidos: " << numberOfExpandedNodes << endl;
@@ -180,8 +181,6 @@ int main(int argc, char const *argv[]) {
     output_file.open(output, ios::out | ios::app);
 
     unsigned clear = system("clear");
-
-    cout << output;
 
     if(output_file.is_open())
         select(option, size, output_file);
