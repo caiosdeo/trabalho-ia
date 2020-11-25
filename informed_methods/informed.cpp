@@ -189,6 +189,9 @@ Table* IDAStarSearch(Table* root, int* expandedNodes, int* visitedNodes, int* nu
                         level = minorDiscardedLevel;
 
                         discarded.clear();
+
+                        // setting root rules again
+                        N->setApplicableRules(findApplicableRules(root));
                     }
                     else{
                         N = N->getFather();

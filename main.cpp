@@ -182,8 +182,6 @@ int main(int argc, char const *argv[]) {
 
     unsigned clear = system("clear");
 
-    cout << output;
-
     if(output_file.is_open())
         select(option, size, output_file);
 
