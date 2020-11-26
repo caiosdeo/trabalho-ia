@@ -31,7 +31,7 @@ void select(int option, int size, ofstream& output_file){
     root->setApplicableRules(findApplicableRules(root));
     root->setHashValue(hashValue(root->getTokens(),root->getSize()));
     root->setCost(0);
-    root->setHeuristic(getNumberOfBlacksOutOfPlaceHeuristic(root->getTokens(),root->getSize()));
+    root->setHeuristic(getBiggestGroupHeuristic(root->getTokens(),root->getSize()));
     root->setFunctionValue(root->getCost()+root->getHeuristic());
     // Statistics Variables
     int numberOfExpandedNodes = 0;
