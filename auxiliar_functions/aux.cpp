@@ -255,7 +255,7 @@ tuple<string,int> printStack(stack<int>* s){
         path += ruleChar(n) + " ";
         
         // add to the cost of the solution 
-        cost += abs(n);
+        cost++;
         
         s->pop();
         
