@@ -55,7 +55,7 @@ Table* givesLight(Table* father, int rule){
     t->setRule(rule);
     t->setApplicableRules(findApplicableRules(t));
     t->setCost(father->getCost()+1);
-    t->setHeuristic(getBiggestGroupHeuristic(t->getTokens(),t->getSize()));
+    t->setHeuristic(getNumberOfBlacksOutOfPlaceHeuristic(t->getTokens(),t->getSize()));
     t->setFunctionValue(t->getCost()+t->getHeuristic());
     
     return t;
